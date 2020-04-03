@@ -1,0 +1,25 @@
+server:
+    port: 3701
+
+spring:
+    application:
+        name: eureka-server
+    security:
+        user:
+            name: admin
+            password: 123456
+
+eureka:
+    instance:
+        lease-expiration-duration-in-seconds: 15
+        instance-id: 注册与发现服务
+    server:
+        response-cache-update-interval-ms: 10000
+        responseCacheAutoExpirationInSeconds: 180
+        evictionIntervalTimerInMs: 60000
+    client:
+        registryFetchIntervalSeconds: 5
+        register-with-eureka: false
+        fetch-registry: false
+        service-url:
+            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:3701/eureka/

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="false">
+	<appender name="console" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/console/console.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}/console/console.%d{yyyyMMdd}.zip</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="pulsar" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/pulsar/pulsar.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}/pulsar/pulsar.%d{yyyyMMdd}.zip</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="elasticsearch" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/elasticsearch/elasticsearch.log</file>
+		<append>true</append>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.path}/elasticsearch/elasticsearch.%d{yyyyMMdd}.zip</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="INFO" activity="true">
+		<appender-ref ref="console"/>
+	</root>
+
+	<logger name="org.apache.pulsar.client.impl.ProducerStatsRecorderImpl" level="WARN" activity="false">
+		<appender-ref ref="pulsar"/>
+	</logger>
+</configuration>

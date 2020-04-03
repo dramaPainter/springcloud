@@ -1,0 +1,34 @@
+server:
+    port: 3301
+
+spring:
+    application:
+        name: realtime-delivery
+    cloud:
+        config:
+            name: api
+            profile: production
+            username: configAdmin
+            password: 123456
+            discovery:
+                enabled: true
+                serviceId: config-server
+        loadbalancer:
+            ribbon:
+                enabled: false
+
+management:
+    endpoint:
+        web:
+            exposure:
+                include: 'bus-refresh'
+
+eureka:
+    instance:
+        appname: realtime-delivery
+        hostname: www.kefu.com
+    client:
+        registerWithEureka: true
+        fetchRegistry: true
+        service-url:
+            defaultZone: http://admin:123456@127.0.0.1:3701/eureka/

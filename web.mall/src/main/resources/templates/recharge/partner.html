@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8"/>
+	<title>充值渠道</title>
+	<link href="/images/css/style.css" rel="stylesheet"/>
+	<script src="/images/js/vue.min.js"></script>
+	<script src="/images/js/axios.min.js"></script>
+</head>
+<body>
+<table id="main" class="imgtable">
+	<thead>
+	<tr>
+		<th>ID</th>
+		<th>名称</th>
+		<th>类型</th>
+		<th>支付宝</th>
+		<th>微信支付</th>
+		<th>云闪付</th>
+		<th>QQ支付</th>
+		<th>苹果支付</th>
+		<th>监控金额</th>
+		<th>类型</th>
+		<th>操作</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr th:each="item : ${src}">
+		<td th:text="${item.id}"></td>
+		<td th:text="${item.name}" th:class="${item.vip} ? 'vip'"></td>
+		<td th:text="${item.recharge ? '充值' : '兑换'}"></td>
+		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).ALIPAY.ordinal()]}">
+			<a @click="status" th:class="!${item.alipay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
+			<a @click="status" th:class="!${item.alipay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
+		</td>
+		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).WXPAY.ordinal()]}">
+			<a @click="status" th:class="!${item.wxpay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
+			<a @click="status" th:class="!${item.wxpay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
+		</td>
+		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).UNIONPAY.ordinal()]}">
+			<a @click="status" th:class="!${item.unionpay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
+			<a @click="status" th:class="!${item.unionpay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
+		</td>
+		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).QQPAY.ordinal()]}">
+			<a @click="status" th:class="!${item.qqpay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
+			<a @click="status" th:class="!${item.qqpay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
+		</td>
+		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).APPLEPAY.ordinal()]}">
+			<a @click="status" th:class="!${item.applepay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
+			<a @click="status" th:class="!${item.applepay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
+		</td>
+		<td th:text="${item.peak}"></td>
+		<td th:text="${item.foreign ? '外部' : '内部'}"></td>
+		<td><a @click="edit" th:itemprop="${#strings.concat(item.display,',',item.vip)}">编辑</a></td>
+	</tr>
+	</tbody>
+</table>
+<div class="form" v-show="enabled">
+	<div class="middle">
+		<div class="header"><label>{{title}}</label><a href="#" @click="close" class="close">×</a></div>
+		<div class="body">
+			<table class="imgtable">
+				<tr>
+					<td>属性：</td>
+					<td>
+						<input id="display_yes" value="1" type="radio" v-model="display" name="display"/><label for="display_yes" class="desc">显示</label>
+						<input id="display_no" value="0" type="radio" v-model="display" name="display"/><label for="display_no" class="desc">隐藏</label><br/>
+						<input id="vip_yes" value="1" type="radio" v-model="vip" name="vip"/><label for="vip_yes" class="desc">VIP</label>
+						<input id="vip_no" value="0" type="radio" v-model="vip" name="vip"/><label for="vip_no" class="desc">非VIP</label>
+					</td>
+				</tr>
+				<tr>
+					<td>监控金额：</td>
+					<td><input v-model.trim="peak" class="w200" maxlength="10"/></td>
+				</tr>
+				<tr>
+					<td>支付宝：</td>
+					<td><input v-model.trim="alipay_min" class="w100" maxlength="5"/> - <input v-model="alipay_max" class="w100" maxlength="5"/></td>
+				</tr>
+				<tr>
+					<td>微信：</td>
+					<td><input v-model.trim="wxpay_min" class="w100" maxlength="5"/> - <input v-model="wxpay_max" class="w100" maxlength="5"/></td>
+				</tr>
+				<tr>
+					<td>云闪付：</td>
+					<td><input v-model.trim="unionpay_min" class="w100" maxlength="5"/> - <input v-model="unionpay_max" class="w100" maxlength="5"/></td>
+				</tr>
+				<tr>
+					<td>QQ支付：</td>
+					<td><input v-model.trim="qqpay_min" class="w100" maxlength="5"/> - <input v-model="qqpay_max" class="w100" maxlength="5"/></td>
+				</tr>
+				<tr>
+					<td>苹果支付：</td>
+					<td><input v-model.trim="applepay_min" class="w100" maxlength="5"/> - <input v-model="applepay_max" class="w100" maxlength="5"/></td>
+				</tr>
+				<tr class="fixed_number">
+					<td>支付宝固定值：</td>
+					<td><textarea v-model.trim="alipay_fixed" cols="30" rows="3" maxlength="100"></textarea></td>
+				</tr>
+				<tr class="fixed_number">
+					<td>微信固定值：</td>
+					<td><textarea v-model.trim="wxpay_fixed" cols="30" rows="3" maxlength="100"></textarea></td>
+				</tr>
+			</table>
+		</div>
+		<div class="footer">
+			<input type="hidden" v-model="id"/>
+			<button type="button" @click="submit">保存</button>
+		</div>
+	</div>
+	<div class="bggray"></div>
+</div>
+<script>
+	var pay = [{id: "alipay", name: "支付宝"}, {id: "wxpay", name: "微信"}, {id: "unionpay", name: "云闪付"}, {id: "qqpay", name: "QQ支付"}, {id: "applepay", name: "苹果支付"}];
+	var settings = function (target) {
+		var enabled = target.className.indexOf("gray") == -1;
+		var id = target.parentNode.parentNode["cells"][0].innerHTML;
+		var name = target.parentNode.parentNode["cells"][1].innerHTML;
+		var type = $("#main").rows[0].cells[target.parentNode.cellIndex].innerHTML;
+		return {enabled: enabled, id: id, name: name, type: type};
+	};
+
+	var form = new Vue({
+		el: '.form',
+		data: {
+			id: 0, enabled: false, title: "", display: "1", vip: "0", peak: "0",
+			alipay_min: "", alipay_max: "", alipay_fixed: "",
+			wxpay_min: "", wxpay_max: "", wxpay_fixed: "",
+			unionpay_min: "", unionpay_max: "",
+			qqpay_min: "", qqpay_max: "",
+			applepay_min: "", applepay_max: ""
+		},
+		methods: {
+			close: function () {
+				this.enabled = false
+			},
+			update: function (data) {
+				axios({
+					method: 'post', url: '/recharge/update', data: data
+				}).then(function (r) {
+					$.fn.then(r)
+				}).catch(function (reason) {
+					alert(reason.response.data.message);
+				});
+			},
+			enable: function (data) {
+				axios({
+					method: 'post', url: '/recharge/enable', data: data
+				}).then(function (r) {
+					$.fn.then(r)
+				}).catch(function (reason) {
+					alert(reason.response.data.message);
+				});
+			},
+			submit: function () {
+				if (this.peak.length > 0 && !$.fn.isInt(this.peak)) {
+					alert("监控金额填写不正确。");
+					return;
+				}
+
+				for (var i = 0; i < pay.length; i++) {
+					if (this[pay[i].id + "_min"].length > 0 && !$.fn.isInt(this[pay[i].id + "_min"])) {
+						alert(pay[i].name + "最小金额填写不正确。");
+						return;
+					} else if (this[pay[i].id + "_max"].length > 0 && !$.fn.isInt(this[pay[i].id + "_max"])) {
+						alert(pay[i].name + "最大金额填写不正确。");
+						return;
+					} else if (this[pay[i].id + "_fixed"] != undefined && this[pay[i].id + "_fixed"].length > 0 && !$.fn.isNumerous(this[pay[i].id + "_fixed"])) {
+						alert(pay[i].name + "定额填写不正确。");
+						return;
+					}
+				}
+
+				if (this.display != "1") {
+					if (!confirm("确定隐藏此渠道？")) return;
+				}
+
+				var partner = {
+					id: this.id, peak: this.peak, display: this.display == "1", vip: this.vip == "1", range: {
+						"2": {id: this.id, method: 2, min: this.alipay_min.length == 0 ? "0" : this.alipay_min, max: this.alipay_max.length == 0 ? "0" : this.alipay_max, fixed: this.alipay_fixed.length == 0 ? [] : this.alipay_fixed.split(",")},
+						"4": {id: this.id, method: 4, min: this.wxpay_min.length == 0 ? "0" : this.wxpay_min, max: this.wxpay_max.length == 0 ? "0" : this.wxpay_max, fixed: this.wxpay_fixed.length == 0 ? [] : this.wxpay_fixed.split(",")},
+						"8": {id: this.id, method: 8, min: this.unionpay_min.length == 0 ? "0" : this.unionpay_min, max: this.unionpay_max.length == 0 ? "0" : this.unionpay_max, fixed: []},
+						"16": {id: this.id, method: 16, min: this.qqpay_min.length == 0 ? "0" : this.qqpay_min, max: this.qqpay_max.length == 0 ? "0" : this.qqpay_max, fixed: []},
+						"32": {id: this.id, method: 32, min: this.applepay_min.length == 0 ? "0" : this.applepay_min, max: this.applepay_max.length == 0 ? "0" : this.applepay_max, fixed: []}
+					}
+				};
+				this.update(partner);
+			}
+		}
+	});
+
+	var main = new Vue({
+		el: '#main',
+		methods: {
+			edit: function () {
+				var target = event.target;
+				var set = settings(target);
+				var data = target.getAttribute("itemprop").split(",");
+				var tr = target.parentNode.parentNode["cells"];
+
+				for (var i = 0; i < pay.length; i++) {
+					var tag = tr[i + 3].getElementsByTagName("a");
+					form[pay[i].id + "_fixed"] = tag.length == 2 ? tag[1].text.replace(/[\[|\]|\s]/g, "") : "";
+					form[pay[i].id + "_min"] = tag.length > 0 ? tag[0].text.replace(/[\[|\]|\s]/g, "").split(",")[0] : "";
+					form[pay[i].id + "_max"] = tag.length > 0 ? tag[0].text.replace(/[\[|\]|\s]/g, "").split(",")[1] : "";
+				}
+
+				form.id = tr[0].innerHTML;
+				form.peak = tr[8].innerHTML;
+				form.display = data[0] == "true" ? "1" : "0";
+				form.vip = data[1] == "true" ? "1" : "0";
+				form.title = "【" + set.name + "】设置";
+				form.enabled = true;
+			},
+			status: function () {
+				var target = event.target;
+				var set = settings(target);
+				var msg = "确认要" + (set.enabled ? "关闭" : "开启") + "【" + set.type + "】" + set.name + "?";
+				if (confirm(msg)) {
+					var method = set.type == "支付宝" ? 2 : (set.type == "微信支付" ? 4 : (set.type == "云闪付" ? 8 :
+						(set.type == "QQ支付" ? 16 : (set.type == "苹果支付" ? 32 : 0))));
+					form.enable({id: set.id, method: method, enabled: !set.enabled});
+				}
+			}
+		}
+	});
+</script>
+</body>
+</html>
