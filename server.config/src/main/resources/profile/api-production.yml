@@ -6,8 +6,8 @@ elasticsearch:
         - https://127.0.0.1:3601
         - https://127.0.0.1:3602
 
-pulsar:
-    url: pulsar://127.0.0.1:3301
+kafka:
+    server: 127.0.0.1:3941
 
 redis:
     host: 127.0.0.1
@@ -33,21 +33,16 @@ ftp:
     basePath: /www
     domain: http://test.cdn.ske666.com
 
-rabbitmq:
-    host: 127.0.0.1
-    port: 3187
-    username: rabbitAdmin
-    password: 100310101b16535b4b5b
-
 database:
+    names: master,slave
     master:
         url: jdbc:mysql://127.0.0.1
         username: root
-        password: 03304f636b17764d261c621e1140
+        password: 535002030102
         pool-name: master
     slave:
         url: jdbc:mysql://127.0.0.1
         username: root
-        password: 03304f636b17764d261c621e1140
+        password: 535002030102
         pool-name: slave
         read-only: true

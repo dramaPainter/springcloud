@@ -1,4 +1,4 @@
-package test.api.kefu;
+package test.web.mall;
 
 import drama.painter.core.web.utility.Dates;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
-package test.api.kefu;
+package test.web.mall;
 
 import drama.painter.core.web.utility.Randoms;
+import drama.painter.core.web.utility.Strings;
 import drama.painter.web.mall.MallApplication;
 import drama.painter.web.mall.service.inf.IRecharge;
 import drama.painter.web.mall.service.pay.enums.MethodEnum;
@@ -38,7 +39,7 @@ public class RechargeControllerTest {
 	@Test
 	public void unionpay() {
 		Exchange one = Exchange.builder().account("6217231116000965680").address("广东省深圳市华强北支行").cash(10000)
-			.ip("127.0.0.1").method(MethodEnum.UNIONPAY).orderid(202002261733245882L).partner(11)
+			.ip("127.0.0.1").method(MethodEnum.UNIONPAY).orderid(Strings.getOrderId("1")).partner(11)
 			.realname("刘子华").userid(80808080).fixdate("2020-02-22 15:31:22").build();
 		service.exchange(one, "http://test.pay.ske666.com/callback/11");
 	}

@@ -1,6 +1,8 @@
-package realtime.delivery;
+package drama.painter.realtime.delivery;
 
 import drama.painter.core.web.dal.DynamicDataSourceRegister;
+import drama.painter.realtime.delivery.model.ChatPO;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -9,7 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import realtime.delivery.tool.Config;
+import drama.painter.realtime.delivery.tool.Config;
+import org.springframework.kafka.annotation.KafkaListener;
 
 /**
  * @author murphy
@@ -17,21 +20,14 @@ import realtime.delivery.tool.Config;
 @EnableEurekaClient
 @SpringBootApplication
 @Import(DynamicDataSourceRegister.class)
-@MapperScan("web.mall.mapper")
-@ComponentScan({"drama.painter.web.core", "realtime.delivery"})
-public class RealtimeDeliveryApplication implements CommandLineRunner {
-	@Autowired
-	Config.PulsarClient consumer;
-
-	@Autowired
-	Config.ElasticSearchClient es;
-
+public class RealtimeDeliveryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RealtimeDeliveryApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) {
-		//consumer.start(PulsarModel.getConsumerModel(es));
+	@KafkaListener(topics = "chat")
+	public void listen(ConsumerRecord<String, ChatPO> record) {
+		System.out.println("kafka的key: " + record.key());
+		System.out.println("kafka的value: " + record.value().toString());
 	}
 }

@@ -2,10 +2,10 @@ package drama.painter.web.mall.service.sink;
 
 import drama.painter.core.web.misc.Page;
 import drama.painter.core.web.misc.Result;
-import drama.painter.core.web.pulsar.zero.ChatPO;
-import drama.painter.web.mall.model.dto.oa.ChatDTO;
-import drama.painter.web.mall.service.inf.ISink;
 import drama.painter.web.mall.mapper.ChatMapper;
+import drama.painter.web.mall.model.dto.oa.ChatDTO;
+import drama.painter.web.mall.model.po.ChatPO;
+import drama.painter.web.mall.service.inf.ISink;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

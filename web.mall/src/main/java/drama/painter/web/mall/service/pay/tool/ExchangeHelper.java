@@ -3,6 +3,7 @@ package drama.painter.web.mall.service.pay.tool;
 import drama.painter.web.mall.service.pay.enums.ExchangeStatusEnum;
 import drama.painter.web.mall.service.pay.enums.ExchangeUserTypeEnum;
 import drama.painter.web.mall.service.pay.enums.MethodEnum;
+import drama.painter.web.mall.service.pay.interfaces.INotify;
 import drama.painter.web.mall.service.pay.mapper.PlatformMapper;
 import drama.painter.web.mall.service.pay.mapper.ZeroMapper;
 import drama.painter.web.mall.service.pay.model.Exchange;
@@ -29,7 +30,7 @@ public class ExchangeHelper {
 		put(ExchangeStatusEnum.REFUNDING, new RefundingProcessor());
 	}};
 
-	public static void execute(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+	public static void execute(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 		executor.get(order.getStatus()).process(order, zeroMapper, platformMapper, notify);
 	}
 
@@ -42,7 +43,7 @@ public class ExchangeHelper {
 		 * @param platformMapper platform数据库对象
 		 * @param notify         通知对象
 		 */
-		void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify);
+		void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify);
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class ExchangeHelper {
 	 */
 	private static class WaitProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			// 无需操作
 		}
 	}
@@ -60,7 +61,7 @@ public class ExchangeHelper {
 	 */
 	private static class ManualProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			// 无需操作
 		}
 	}
@@ -70,7 +71,7 @@ public class ExchangeHelper {
 	 */
 	private static class RewindProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			if (order.getType() == ExchangeUserTypeEnum.USER) {
 				platformMapper.sendMail(new Mail(order.getUserid(), 0, (long) order.getPrice(), "兑换金币退还通知", order.getCallback()));
 				notify.notifyMail(order.getUserid());
@@ -86,7 +87,7 @@ public class ExchangeHelper {
 	 */
 	private static class FailProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			executor.get(ExchangeStatusEnum.REWIND).process(order, zeroMapper, platformMapper, notify);
 		}
 	}
@@ -96,7 +97,7 @@ public class ExchangeHelper {
 	 */
 	private static class SuccessProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			zeroMapper.updateExchangeAmount(order.getUserid(), order.getCash(), order.getType().getValue());
 			if (order.getType() == ExchangeUserTypeEnum.USER) {
 				String method = order.getMethod() == MethodEnum.ALIPAY ? "支付宝" : "银行";
@@ -112,7 +113,7 @@ public class ExchangeHelper {
 	 */
 	private static class RefuseProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			if (order.getType() == ExchangeUserTypeEnum.USER) {
 				String msg = String.format("您的兑换已被拒绝，原因是：%s　如有问题请联系客服。", order.getCallback());
 				platformMapper.sendMail(new Mail(order.getUserid(), 0, 0, "拒绝兑换金币通知", msg));
@@ -126,7 +127,7 @@ public class ExchangeHelper {
 	 */
 	private static class ReadyProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			// 无需操作
 		}
 	}
@@ -136,7 +137,7 @@ public class ExchangeHelper {
 	 */
 	private static class RefundingProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			// 无需操作
 		}
 	}
@@ -146,7 +147,7 @@ public class ExchangeHelper {
 	 */
 	private static class RefundProcessor implements IProcessor {
 		@Override
-		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, Notify notify) {
+		public void process(Exchange order, ZeroMapper zeroMapper, PlatformMapper platformMapper, INotify notify) {
 			zeroMapper.updateExchangeAmount(order.getUserid(), 0 - order.getCash(), order.getType().getValue());
 		}
 	}

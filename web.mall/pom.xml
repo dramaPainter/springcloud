@@ -6,7 +6,7 @@
 	<artifactId>web.mall</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	<name>web - 客服系统</name>
+	<name>web - 聊天系统</name>
 
 	<parent>
 		<groupId>drama.painter</groupId>

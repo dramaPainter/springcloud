@@ -33,7 +33,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>web.web.EurekaApplication</mainClass>
+							<mainClass>drama.painter.server.eureka.EurekaApplication</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>spring/eureka</classpathPrefix>
 						</manifest>

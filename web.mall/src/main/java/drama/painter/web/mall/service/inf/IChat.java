@@ -1,7 +1,7 @@
 package drama.painter.web.mall.service.inf;
 
 import drama.painter.core.web.misc.Result;
-import drama.painter.core.web.pulsar.zero.ChatPO;
+import drama.painter.web.mall.model.po.ChatPO;
 
 import java.util.List;
 

@@ -39,8 +39,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 	}
 
 	void initDefaultDataSource(Environment env) {
-		String dsPrefix = env.getProperty("database.default-name");
-		defaultDataSource = dataSourceMap.get(dsPrefix);
+		defaultDataSource = dataSourceMap.get("master");
 	}
 
 	void initDataSource(Environment env) {
@@ -49,14 +48,14 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
 		for (String prefix : prefixes.split(COMMA)) {
 			// 多个数据源
 			Map<String, String> map = new HashMap<>(8);
-			map.put("driver", env.getProperty("database.instance." + prefix + ".driver"));
-			map.put("url", env.getProperty("database.instance." + prefix + ".url"));
-			map.put("username", env.getProperty("database.instance." + prefix + ".username"));
-			map.put("password", Encrypts.decrypt(env.getProperty("database.instance." + prefix + ".password")));
-			map.put("type", env.getProperty("database.instance." + prefix + ".type"));
-			map.put("pool-name", env.getProperty("database.instance." + prefix + ".pool-name"));
-			map.put("read-only", env.getProperty("database.instance." + prefix + ".read-only"));
-			map.put("max-pool-size", env.getProperty("database.instance." + prefix + ".max-pool-size"));
+			map.put("driver", env.getProperty("database." + prefix + ".driver"));
+			map.put("url", env.getProperty("database." + prefix + ".url"));
+			map.put("username", env.getProperty("database." + prefix + ".username"));
+			map.put("password", Encrypts.decrypt(env.getProperty("database." + prefix + ".password")));
+			map.put("type", env.getProperty("database." + prefix + ".type"));
+			map.put("pool-name", env.getProperty("database." + prefix + ".pool-name"));
+			map.put("read-only", env.getProperty("database." + prefix + ".read-only"));
+			map.put("max-pool-size", env.getProperty("database." + prefix + ".max-pool-size"));
 			DataSource ds = buildDataSource(map);
 			map.clear();
 			dataSourceMap.put(prefix, ds);

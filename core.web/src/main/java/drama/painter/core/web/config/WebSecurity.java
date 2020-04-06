@@ -3,8 +3,8 @@ package drama.painter.core.web.config;
 import drama.painter.core.web.misc.User;
 import drama.painter.core.web.tool.HttpLog;
 import drama.painter.core.web.utility.Encrypts;
+import drama.painter.core.web.utility.Strings;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.shade.org.eclipse.util.UrlEncoded;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -205,7 +205,7 @@ class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
 		PasswordAuthorizer.destroy();
 		String username = request.getParameter("username");
-		String param = WebSecurity.LOGIN_URL.concat("?error=").concat(UrlEncoded.encodeString(exception.getMessage()));
+		String param = WebSecurity.LOGIN_URL.concat("?error=").concat(Strings.urlencode(exception.getMessage()));
 		log.info("[登录][{}][{}]登录失败，原因是：{}", username, HttpLog.getIp(request), exception.getMessage());
 		response.sendRedirect(param);
 	}

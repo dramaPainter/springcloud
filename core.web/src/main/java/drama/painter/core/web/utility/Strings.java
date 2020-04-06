@@ -1,7 +1,8 @@
 package drama.painter.core.web.utility;
 
 import lombok.SneakyThrows;
-import org.apache.pulsar.shade.org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
+import sun.security.util.Length;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -26,8 +27,22 @@ public class Strings {
 			value = INCREMENT;
 		}
 		String time = Dates.toDigitalTime(Instant.now().getEpochSecond());
-		String suffix = StringUtils.leftPad(String.valueOf(value), 3, '0');
+		String suffix = padLeft(String.valueOf(value), 3, '0');
 		return Long.parseLong(prefix.concat(time).concat(suffix));
+	}
+
+	public static String padLeft(String src, int length, char letter) {
+		int diff = length - src.length();
+		if (diff <= 0) {
+			return src;
+		}
+
+		char[] charr = new char[length];
+		System.arraycopy(src.toCharArray(), 0, charr, 0, src.length());
+		for (int i = src.length(); i < length; i++) {
+			charr[i] = letter;
+		}
+		return new String(charr);
 	}
 
 	public static String toByteString(byte[] dest) {

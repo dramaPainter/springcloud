@@ -12,7 +12,6 @@ import drama.painter.web.mall.service.pay.mapper.PlatformMapper;
 import drama.painter.web.mall.service.pay.mapper.ZeroMapper;
 import drama.painter.web.mall.service.pay.model.Exchange;
 import drama.painter.web.mall.service.pay.tool.ExchangeHelper;
-import drama.painter.web.mall.service.pay.tool.Notify;
 
 /**
  * @author murphy
@@ -28,7 +27,7 @@ public class PersistentServiceImpl implements IPersistentService {
 	PlatformMapper platformMapper;
 
 	@Autowired
-	Notify notify;
+	NotifyImpl notify;
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override

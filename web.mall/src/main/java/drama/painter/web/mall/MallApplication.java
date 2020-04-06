@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Import;
 @EnableEurekaClient
 @SpringBootApplication
 @Import(DynamicDataSourceRegister.class)
-@MapperScan({"web.mall.mapper", "web.mall.service.pay.mapper"})
-@ComponentScan({"drama.painter.web.core", "web.mall"})
+@MapperScan({"drama.painter.web.mall.mapper", "drama.painter.web.mall.service.pay.mapper"})
+@ComponentScan({"drama.painter.core.web", "drama.painter.web.mall"})
 public class MallApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MallApplication.class, args);

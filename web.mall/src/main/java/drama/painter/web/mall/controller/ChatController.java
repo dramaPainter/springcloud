@@ -3,7 +3,7 @@ package drama.painter.web.mall.controller;
 import drama.painter.core.web.config.WebSecurity;
 import drama.painter.core.web.misc.Result;
 import drama.painter.core.web.misc.User;
-import drama.painter.core.web.pulsar.zero.ChatPO;
+import drama.painter.web.mall.model.po.ChatPO;
 import drama.painter.web.mall.service.inf.IChat;
 import drama.painter.web.mall.service.inf.IUpload;
 import org.springframework.beans.factory.annotation.Autowired;
