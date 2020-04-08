@@ -90,5 +90,7 @@ transport.tcp.port: 3953
 cd /Users/murphy/Downloads/soft/elasticsearch/slave3
 bin/elasticsearch -d
 ```
-* 三个实例已经全部安装完成，现在我们来测验是否有效。在谷歌浏览器下载[ES插件](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm)
-* 填入网址 http://127.0.0.1:3961 点击链接，会弹出密码认证框，用户名是elastic，密码是你修改的密码
+* 三个实例已经全部安装完成，接口网址是
+* https://127.0.0.1:3961 或者 https://127.0.0.1:3962 或者 https://127.0.0.1:3963 
+* 用户名是elastic，密码是你修改的密码
+* 注意：由于谷歌浏览器不支持https://127.0.0.1，建议使用其它浏览器接口网址。
