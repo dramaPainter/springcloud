@@ -66,7 +66,7 @@ bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis
 ```
 bin/elasticsearch-setup-passwords interactive
 ```
-* 复制文件夹master并改名为slave2,删掉里面的logs和data文件夹，修改部分配置未提及的不需要改动
+* 复制文件夹master并改名为slave2,删掉里面的logs和data文件夹，修改部分配置，未提及的不需要改动
 ```yaml
 node.name: slave2
 node.master: false
@@ -78,7 +78,7 @@ transport.tcp.port: 3952
 cd /Users/murphy/Downloads/soft/elasticsearch/slave2
 bin/elasticsearch -d
 ```
-* 复制文件夹master并改名为slave3,删掉里面的logs和data文件夹，修改部分配置未提及的不需要改动
+* 复制文件夹master并改名为slave3,删掉里面的logs和data文件夹，修改部分配置，未提及的不需要改动
 ```yaml
 node.name: slave3
 node.master: false
@@ -93,4 +93,4 @@ bin/elasticsearch -d
 * 三个实例已经全部安装完成，接口网址是
 * https://127.0.0.1:3961 或者 https://127.0.0.1:3962 或者 https://127.0.0.1:3963 
 * 用户名是elastic，密码是你修改的密码
-* 注意：由于谷歌浏览器不支持https://127.0.0.1，建议使用其它浏览器接口网址。
+* 注意：由于谷歌浏览器不支持[https://127.0.0.1](https://127.0.0.1),建议使用其它浏览器接口网址。
