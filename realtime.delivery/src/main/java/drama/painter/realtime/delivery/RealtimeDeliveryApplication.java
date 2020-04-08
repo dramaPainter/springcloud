@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import drama.painter.realtime.delivery.tool.Config;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 
 /**
  * @author murphy
@@ -23,11 +24,5 @@ import org.springframework.kafka.annotation.KafkaListener;
 public class RealtimeDeliveryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RealtimeDeliveryApplication.class, args);
-	}
-
-	@KafkaListener(topics = "chat")
-	public void listen(ConsumerRecord<String, ChatPO> record) {
-		System.out.println("kafka的key: " + record.key());
-		System.out.println("kafka的value: " + record.value().toString());
 	}
 }

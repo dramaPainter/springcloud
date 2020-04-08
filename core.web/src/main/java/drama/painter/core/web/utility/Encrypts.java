@@ -68,7 +68,7 @@ public class Encrypts {
 		}
 	}
 
-	static byte[] coreEncrypt(byte[] source, boolean isDest) {
+	private static byte[] coreEncrypt(byte[] source, boolean isDest) {
 		int len = source.length;
 		byte[] dest = new byte[len];
 

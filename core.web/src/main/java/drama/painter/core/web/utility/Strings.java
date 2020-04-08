@@ -46,21 +46,17 @@ public class Strings {
 	}
 
 	public static String toByteString(byte[] dest) {
-		StringBuilder hexValue = new StringBuilder();
-		for (byte md5Byte : dest) {
-			int val = ((int) md5Byte) & 0xff;
-			if (val < 16) {
-				hexValue.append("0");
-			}
-			hexValue.append(Integer.toHexString(val));
+		StringBuilder buf = new StringBuilder(dest.length * 2);
+		for (byte b : dest) {
+			buf.append(String.format("%02x", b & 0xff));
 		}
-		return hexValue.toString();
+		return buf.toString();
 	}
 
 	public static byte[] fromByteString(String src) {
 		byte[] dest = new byte[src.length() / 2];
 		for (int i = 0; i < dest.length; i++) {
-			dest[i] = Byte.decode("0x" + src.substring(i * 2, i * 2 + 2));
+			dest[i] = (byte) Integer.parseInt(src.substring(i * 2, i * 2 + 2), 16);
 		}
 		return dest;
 	}

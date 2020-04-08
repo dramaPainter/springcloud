@@ -48,7 +48,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	protected Function<String, User> userProvider;
 
 	@Autowired
-	PasswordAuthorizer auth;
+	PasswordAuthImpl auth;
 
 	@PostConstruct
 	public void init() {
@@ -136,7 +136,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 }
 
 @Component
-class PasswordAuthorizer extends AbstractUserDetailsAuthenticationProvider implements UserDetailsService {
+class PasswordAuthImpl extends AbstractUserDetailsAuthenticationProvider implements UserDetailsService {
 	Function<String, User> userProvider;
 	static ThreadLocal<User> USER = new ThreadLocal();
 
@@ -192,7 +192,7 @@ class PasswordAuthorizer extends AbstractUserDetailsAuthenticationProvider imple
 class SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-		PasswordAuthorizer.destroy();
+		PasswordAuthImpl.destroy();
 		String username = request.getParameter("username");
 		log.info("[登录][{}][{}]登录成功", username, HttpLog.getIp(request));
 		super.onAuthenticationSuccess(request, response, authentication);
@@ -203,7 +203,7 @@ class SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-		PasswordAuthorizer.destroy();
+		PasswordAuthImpl.destroy();
 		String username = request.getParameter("username");
 		String param = WebSecurity.LOGIN_URL.concat("?error=").concat(Strings.urlencode(exception.getMessage()));
 		log.info("[登录][{}][{}]登录失败，原因是：{}", username, HttpLog.getIp(request), exception.getMessage());

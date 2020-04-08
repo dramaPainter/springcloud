@@ -1,22 +1,25 @@
 package test.web.mall;
 
-import drama.painter.core.web.utility.Dates;
+import drama.painter.core.web.utility.Encrypts;
+import drama.painter.core.web.utility.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @Slf4j
 public class SimpleTest {
 	@Test
 	public void test() {
-		log.info(LocalDateTime.now(ZoneId.of("Asia/Shanghai")).toEpochSecond(ZoneOffset.ofHours(8)) + "");
-		log.info(LocalDateTime.now(ZoneOffset.ofHours(8)).toEpochSecond(ZoneOffset.ofHours(8)) + "");
-		log.info(LocalDateTime.now().toEpochSecond(ZoneOffset.ofHours(8)) + "");
-		log.info(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + "");
-		log.info(Dates.toDateTime(1583004579));
-		log.info(Dates.toLong("2020-03-01 03:29:39") + "");
+		String te = Encrypts.md5("9fj023ifji02jp1oqj");
+		try {
+			byte[] arr = Files.readAllBytes(new File("/Users/murphy/Downloads/soft/elasticsearch/master/config/ca.crt").toPath());
+			String text = Encrypts.encrypt(new String(arr));
+			log.info(text);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -23,10 +23,6 @@ public class Config {
 	class PostFilter extends HttpLog {
 	}
 
-	@Configuration
-	public class KafkaConfig extends Kafka {
-	}
-
 	@Component
 	public class Uploader extends Upload {
 	}

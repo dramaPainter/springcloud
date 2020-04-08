@@ -1,7 +1,9 @@
 package drama.painter.core.web.config;
 
+import drama.painter.core.web.tool.Certification;
 import drama.painter.core.web.tool.Json;
 import drama.painter.core.web.utility.Encrypts;
+import drama.painter.core.web.utility.Strings;
 import lombok.Data;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -71,7 +73,7 @@ public class ElasticSearch {
 		try {
 			SearchResponse response = client.search(request, RequestOptions.DEFAULT);
 			if (response.status() == RestStatus.OK) {
- 				return Arrays.asList(response.getHits().getHits()).stream()
+				return Arrays.asList(response.getHits().getHits()).stream()
 					.map(x -> Json.parseObject(x.getSourceAsString(), type))
 					.collect(Collectors.toList());
 			} else {
@@ -216,35 +218,9 @@ class ElasticConfig {
 		return new RestHighLevelClient(RestClient.builder(hosts)
 			.setRequestConfigCallback(x ->
 				x.setSocketTimeout(TIMEOUT * 1000).setConnectTimeout(TIMEOUT * 1000).setConnectionRequestTimeout(TIMEOUT * 1000 * 4)
-			).setHttpClientConfigCallback(x -> {
-				x.setDefaultCredentialsProvider(provider);
-				return x.setSSLContext(getSslContext(entity.getCert()));
-			}));
-	}
-
-	SSLContext getSslContext(String cert) {
-		try {
-			KeyStore keyStore = getKeyStore(cert);
-			SSLContext sslContext = SSLContext.getInstance("SSL");
-			TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			factory.init(keyStore);
-			sslContext.init(null, factory.getTrustManagers(), new SecureRandom());
-			return sslContext;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	KeyStore getKeyStore(String cert) throws Exception {
-		Certificate ca;
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		try (InputStream inputStream = new ByteArrayInputStream(Encrypts.decrypt(cert).getBytes())) {
-			ca = cf.generateCertificate(inputStream);
-		}
-
-		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-		keyStore.load(null, null);
-		keyStore.setCertificateEntry("ca", ca);
-		return keyStore;
+			).setHttpClientConfigCallback(x ->
+				x.setDefaultCredentialsProvider(provider)
+				.setSSLContext(Certification.parse(Encrypts.decrypt(entity.getCert()))
+			)));
 	}
 }
