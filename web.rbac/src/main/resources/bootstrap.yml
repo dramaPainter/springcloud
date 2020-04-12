@@ -1,0 +1,39 @@
+server:
+    port: 3017
+    servlet:
+        session:
+            timeout: PT1440M
+
+spring:
+    thymeleaf:
+        cache: false
+    application:
+        name: web-rbac
+    cloud:
+        config:
+            name: api
+            profile: production
+            username: configAdmin
+            password: 123456
+            discovery:
+                enabled: true
+                serviceId: config-server
+        loadbalancer:
+            ribbon:
+                enabled: false
+
+management:
+    endpoint:
+        web:
+            exposure:
+                include: 'bus-refresh'
+
+eureka:
+    instance:
+        appname: 权限系统
+        hostname: www.oa.com
+    client:
+        registerWithEureka: true
+        fetchRegistry: true
+        service-url:
+            defaultZone: http://admin:123456@127.0.0.1:3701/eureka/
