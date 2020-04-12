@@ -1,10 +1,7 @@
 package drama.painter.server.config.tool;
 
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
 import java.util.stream.IntStream;
 
@@ -43,7 +40,7 @@ public class Decrypt {
 
 	public static String decrypt(String text) {
 		try {
-			if (Strings.isBlank(text) || ((text.length() % HALF) == 1)) {
+			if (StringUtils.isEmpty(text) || ((text.length() % HALF) == 1)) {
 				return "";
 			}
 			byte[] source = new byte[text.length() / 2];

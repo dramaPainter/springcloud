@@ -21,7 +21,6 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import sun.security.acl.PrincipalImpl;
 import drama.painter.web.mall.mapper.StaffMapper;
 import drama.painter.web.mall.service.impl.ChatImpl;
 
@@ -62,7 +61,7 @@ public class WebSocket implements WebSocketMessageBrokerConfigurer {
 					} else {
 						Optional<User> any = USERS.stream().filter(o -> o.getUsername().equals(token.getName())).findAny();
 						Asserts.check(!any.isPresent(), "该帐号已在其它地方登录了。");
-						accessor.setUser(new PrincipalImpl(token.getName()));
+						accessor.setUser(() -> token.getName());
 						return message;
 					}
 				} else {

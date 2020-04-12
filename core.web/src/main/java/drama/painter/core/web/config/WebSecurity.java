@@ -29,7 +29,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,10 +43,11 @@ import java.util.stream.Collectors;
  *
  * @author murphy
  */
+@Slf4j(topic = "api")
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 	public static final String LOGIN_URL = "/login/login";
 	static final String SECRET_KEY = "Web-Security-Client-Key";
-	static final String[] AUTHORIZED_URL = {"/favicon.ico", "/images/**", "/chat/receive", "/chat/error", "/actuator/bus-refresh"};
+	protected static final String[] AUTHORIZED_URL = {"/", "/favicon.ico", "/images/**", "/login/**", "/actuator/**"};
 	protected Function<String, User> userProvider;
 
 	@Autowired
@@ -62,9 +65,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.headers().frameOptions().disable();
-		http.csrf().disable().authenticationProvider(auth).authorizeRequests()
-			.antMatchers(AUTHORIZED_URL).permitAll().anyRequest().hasAuthority("page101")
+		http.headers().frameOptions().disable().and().csrf().disable()
+			.authenticationProvider(auth).authorizeRequests()
+			.antMatchers(AUTHORIZED_URL).permitAll().anyRequest().authenticated()
 			.and().rememberMe().rememberMeServices(getRememberMeServices())
 			.and().logout().logoutUrl("/login/logout").logoutSuccessUrl("/")
 			.invalidateHttpSession(true).clearAuthentication(true)
@@ -87,9 +90,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 		public PageUserDetails(User user) {
 			this.user = user;
-			if (Objects.nonNull(user.getPermission())) {
+			if (!StringUtils.isEmpty(user.getPermission())) {
 				auth = Arrays.asList(user.getPermission().split(",")).stream()
-					.map(o -> new SimpleGrantedAuthority(o))
+					.map(o -> new SimpleGrantedAuthority("ROLE_" + o))
 					.collect(Collectors.toList());
 			}
 		}
@@ -135,6 +138,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	}
 }
 
+
+
 @Component
 class PasswordAuthImpl extends AbstractUserDetailsAuthenticationProvider implements UserDetailsService {
 	Function<String, User> userProvider;
@@ -178,10 +183,13 @@ class PasswordAuthImpl extends AbstractUserDetailsAuthenticationProvider impleme
 		}
 
 		if (!StringUtils.isEmpty(user.getIp())) {
-			String ip = HttpLog.getIp(request);
-			Arrays.asList(user.getIp().split(",")).stream()
-				.filter(o -> o.equals(ip)).findAny()
-				.orElseThrow(() -> new BadLoginException("IP不在白名单"));
+			if (StringUtils.isEmpty(user.getIp())) {
+				String ip = HttpLog.getIp(request);
+				Arrays.asList(user.getIp().split(","))
+					.stream()
+					.filter(o -> o.equals(ip)).findAny()
+					.orElseThrow(() -> new BadLoginException("IP不在白名单"));
+			}
 		}
 		user.setPassword(null);
 		return new WebSecurity.PageUserDetails(user);
@@ -202,11 +210,11 @@ class SuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 @Slf4j(topic = "api")
 class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
 		PasswordAuthImpl.destroy();
 		String username = request.getParameter("username");
-		String param = WebSecurity.LOGIN_URL.concat("?error=").concat(Strings.urlencode(exception.getMessage()));
-		log.info("[登录][{}][{}]登录失败，原因是：{}", username, HttpLog.getIp(request), exception.getMessage());
+		String param = WebSecurity.LOGIN_URL.concat("?error=").concat(Strings.urlencode(e.getMessage()));
+		log.info("[登录][{}][{}]登录失败，原因是：{}", username, HttpLog.getIp(request), e.getMessage());
 		response.sendRedirect(param);
 	}
 }

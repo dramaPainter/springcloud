@@ -13,13 +13,5 @@ import java.nio.file.Files;
 public class SimpleTest {
 	@Test
 	public void test() {
-		String te = Encrypts.md5("9fj023ifji02jp1oqj");
-		try {
-			byte[] arr = Files.readAllBytes(new File("/Users/murphy/Downloads/soft/elasticsearch/master/config/ca.crt").toPath());
-			String text = Encrypts.encrypt(new String(arr));
-			log.info(text);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

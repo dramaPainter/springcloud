@@ -22,8 +22,6 @@
 
 	<modules>
 		<module>core.web</module>
-		<module>web.mall</module>
-		<module>realtime.delivery</module>
 	</modules>
 
 	<dependencies>
@@ -64,29 +62,5 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<excludeGroupIds>
-								org.junit,
-								org.freemarker
-							</excludeGroupIds>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
 

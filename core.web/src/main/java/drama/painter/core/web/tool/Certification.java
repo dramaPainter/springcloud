@@ -1,7 +1,5 @@
 package drama.painter.core.web.tool;
 
-import drama.painter.core.web.utility.Encrypts;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.ByteArrayInputStream;
@@ -17,7 +15,15 @@ import java.security.cert.CertificateFactory;
 public final class Certification {
 	public static SSLContext parse(String certText) {
 		try {
-			KeyStore keyStore = getKeyStore(certText);
+			Certificate ca;
+			CertificateFactory cf = CertificateFactory.getInstance("X.509");
+			try (InputStream inputStream = new ByteArrayInputStream(certText.getBytes())) {
+				ca = cf.generateCertificate(inputStream);
+			}
+
+			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			keyStore.load(null, null);
+			keyStore.setCertificateEntry("ca", ca);
 			SSLContext sslContext = SSLContext.getInstance("SSL");
 			TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			factory.init(keyStore);
@@ -26,18 +32,5 @@ public final class Certification {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private static KeyStore getKeyStore(String certText) throws Exception {
-		Certificate ca;
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		try (InputStream inputStream = new ByteArrayInputStream(certText.getBytes())) {
-			ca = cf.generateCertificate(inputStream);
-		}
-
-		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-		keyStore.load(null, null);
-		keyStore.setCertificateEntry("ca", ca);
-		return keyStore;
 	}
 }

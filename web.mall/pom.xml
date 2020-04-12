@@ -36,10 +36,6 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -50,7 +46,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>drama.painter.web.mall.MallApplication</mainClass>
+							<mainClass>drama.painter.web.MallApplication</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>spring/mall</classpathPrefix>
 						</manifest>
@@ -68,10 +64,14 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/spring/mall</outputDirectory>
+							<outputDirectory>${project.build.directory}/spring/web.mall</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeGroupIds>
+								org.junit,
+								org.freemarker
+							</excludeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

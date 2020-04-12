@@ -56,10 +56,14 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/spring/delivery</outputDirectory>
+							<outputDirectory>${project.build.directory}/spring/realtime.delivery</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeGroupIds>
+								org.junit,
+								org.freemarker
+							</excludeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

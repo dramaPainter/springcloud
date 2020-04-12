@@ -1,21 +1,13 @@
 package drama.painter.server.config;
 
-import drama.painter.server.config.tool.KafkaConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 
 /**
  * @author murphy
  */
-@EnableDiscoveryClient
 @EnableConfigServer
-
-@ComponentScan("drama.painter.server.config.tool")
-@Import(KafkaConfig.class)
 @SpringBootApplication
 public class ConfigApplication {
 	public static final String LOCAL_PATH;

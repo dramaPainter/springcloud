@@ -8,8 +8,8 @@ Spring Cloud 基础的脚手架，功能集全。
 391x    zookeeper 内部通信端口
 392x    zookeeper 选举端口
 394x    kafka 通信端口
-3949    kafka manager(CMAK) 网页端口
-395x    elasticsearch 通信端口
+3949    kafka manager(CMAK) HTTP端口
+395x    elasticsearch 内部通信端口
 396x    elasticsearch HTTP端口
 ```
 

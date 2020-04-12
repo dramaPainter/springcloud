@@ -28,7 +28,10 @@ import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.UpdateByQueryRequest;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.MaxAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.ParsedMax;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -47,7 +50,10 @@ import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -152,6 +158,14 @@ public class ElasticSearch {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public AtomicInteger max(String index, String field) {
+		MaxAggregationBuilder max = AggregationBuilders.max("最大值").field(field);
+		SearchResponse search = search(new SearchRequest(index).source(new SearchSourceBuilder().aggregation(max)));
+		double value = ((ParsedMax) search.getAggregations().get("最大值")).getValue();
+		value = Double.isInfinite(value) ? 0 : value;
+		return new AtomicInteger((int) value);
 	}
 
 	public SearchResponse search(SearchRequest request) {

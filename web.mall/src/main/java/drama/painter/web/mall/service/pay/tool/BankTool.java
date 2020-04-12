@@ -2,7 +2,7 @@ package drama.painter.web.mall.service.pay.tool;
 
 import drama.painter.web.mall.service.pay.anomaly.UnsupportedException;
 import drama.painter.web.mall.service.pay.model.Bank;
-import org.apache.logging.log4j.util.Strings;
+import org.springframework.util.StringUtils;
 
 /**
  * @author murphy
@@ -365,7 +365,7 @@ public class BankTool {
 		//6位Bin号
 		String cardbin6 = idCard.substring(0, 6);
 		name = getName(cardbin6);
-		if (!Strings.isBlank(name)) {
+		if (StringUtils.isEmpty(name)) {
 			return name;
 		}
 
@@ -407,18 +407,18 @@ public class BankTool {
 			}
 		}
 
-		if (Strings.isBlank(province)) {
+		if (StringUtils.isEmpty(province)) {
 			throw new UnsupportedException("开户银行地址必须包含xx省(自治区)。直辖市填写xx市");
 		}
 
-		String city = !branch.contains("市") ? "" : (Strings.isBlank(branch.substring(0, branch.indexOf("市"))) ? province : branch.substring(0, branch.indexOf("市")));
+		String city = !branch.contains("市") ? "" : (StringUtils.isEmpty(branch.substring(0, branch.indexOf("市"))) ? province : branch.substring(0, branch.indexOf("市")));
 
-		if (Strings.isBlank(city)) {
+		if (StringUtils.isEmpty(city)) {
 			throw new UnsupportedException("开户银行地址必须含有xx市");
 		}
 
 		String branchName = branch.substring(branch.indexOf("市") + 1);
-		branchName = Strings.isBlank(branchName) ? city + "支行" : branchName;
+		branchName = StringUtils.isEmpty(branchName) ? city + "支行" : branchName;
 		return new Bank(bankName, province, city, branchName, cardNo, bankCode);
 	}
 }

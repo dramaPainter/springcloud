@@ -4,8 +4,8 @@
 	<meta charset="UTF-8"/>
 	<title>充值渠道</title>
 	<link href="/images/css/style.css" rel="stylesheet"/>
-	<script src="/images/js/vue.min.js"></script>
-	<script src="/images/js/axios.min.js"></script>
+	<script src="/images/js/vue.js"></script>
+	<script src="/images/js/axios.js"></script>
 </head>
 <body>
 <table id="main" class="imgtable">
@@ -29,23 +29,23 @@
 		<td th:text="${item.id}"></td>
 		<td th:text="${item.name}" th:class="${item.vip} ? 'vip'"></td>
 		<td th:text="${item.recharge ? '充值' : '兑换'}"></td>
-		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).ALIPAY.ordinal()]}">
+		<td th:with="pay=${item.range[T(web.RechargeMethodEnum).ALIPAY.ordinal()]}">
 			<a @click="status" th:class="!${item.alipay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
 			<a @click="status" th:class="!${item.alipay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
 		</td>
-		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).WXPAY.ordinal()]}">
+		<td th:with="pay=${item.range[T(web.RechargeMethodEnum).WXPAY.ordinal()]}">
 			<a @click="status" th:class="!${item.wxpay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
 			<a @click="status" th:class="!${item.wxpay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
 		</td>
-		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).UNIONPAY.ordinal()]}">
+		<td th:with="pay=${item.range[T(web.RechargeMethodEnum).UNIONPAY.ordinal()]}">
 			<a @click="status" th:class="!${item.unionpay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
 			<a @click="status" th:class="!${item.unionpay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
 		</td>
-		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).QQPAY.ordinal()]}">
+		<td th:with="pay=${item.range[T(web.RechargeMethodEnum).QQPAY.ordinal()]}">
 			<a @click="status" th:class="!${item.qqpay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
 			<a @click="status" th:class="!${item.qqpay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
 		</td>
-		<td th:with="pay=${item.range[T(web.mall.model.enums.RechargeMethodEnum).APPLEPAY.ordinal()]}">
+		<td th:with="pay=${item.range[T(web.RechargeMethodEnum).APPLEPAY.ordinal()]}">
 			<a @click="status" th:class="!${item.applepay} ? 'gray'" th:if="${pay.max > 0}" th:text="'[' + ${pay.min} + ', ' + ${pay.max} + ']'"></a>
 			<a @click="status" th:class="!${item.applepay} ? 'gray'" th:if="${#arrays.length(pay.fixed) > 0}" th:text="${pay.fixed}"></a>
 		</td>
