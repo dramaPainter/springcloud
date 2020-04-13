@@ -1,5 +1,7 @@
 package drama.painter.web.rbac.service.impl;
 
+import drama.painter.core.web.misc.Constant;
+import drama.painter.core.web.misc.Result;
 import drama.painter.web.rbac.model.dto.oa.PageDTO;
 import drama.painter.web.rbac.model.dto.oa.StaffDTO;
 import drama.painter.web.rbac.service.inf.IOA;
@@ -32,8 +34,18 @@ public class OAImpl implements IOA {
 	}
 
 	@Override
+	public Result<List<StaffDTO>> getStaff(int page) {
+		int from = ((page < 1 ? 1 : page) - 1) * Constant.PAGE_SIZE;
+		int to = from + Constant.PAGE_SIZE > STAFF.size() ? STAFF.size() - 1 : from + Constant.PAGE_SIZE;
+		return new Result(STAFF.size(), null, STAFF.subList(from, to));
+	}
+
+	@Override
 	public StaffDTO getStaff(String username) {
-		return STAFF.stream().filter(o -> o.getUsername().equals(username)).findAny().orElse(null);
+		return STAFF.stream()
+			.filter(o -> o.getUsername().equals(username))
+			.findAny()
+			.orElse(null);
 	}
 
 	@Override

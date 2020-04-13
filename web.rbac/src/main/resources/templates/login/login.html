@@ -3,36 +3,39 @@
 <head>
 	<meta charset="UTF-8"/>
 	<title>聊天登录</title>
-	<link href="/images/css/style.css" rel="stylesheet"/>
+	<link href="/file/vue/element-ui.css" rel="stylesheet"/>
+	<style>
+		.w100 { width: 100px; }
+		.w200 { width: 200px; }
+		.ml { margin-left: 100px; }
+	</style>
 </head>
 <body>
-<div class="form" style="width: 500px">
-	<form action="/login/security" method="post">
-		<table class="imgtable">
-			<tr>
-				<td>用户名</td>
-				<td><input type="text" name="username"/></td>
-			</tr>
-			<tr>
-				<td>密码</td>
-				<td><input type="password" name="password"/></td>
-			</tr>
-			<tr>
-				<td>记住我</td>
-				<td><input type="checkbox" name="remeber" id="remeber"/><label for="remeber">1天</label></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>
-					<button type="submit">登录</button>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td data-th-text="${param.error}"></td>
-			</tr>
-		</table>
-	</form>
-</div>
+<form action="/login/security" method="post" class="el-form demo-ruleForm">
+	<div class="el-form-item"><label class="el-form-item__label w100">用户名</label>
+		<div class="el-form-item__content ml">
+			<div class="el-input"><input name="username" type="text" class="el-input__inner w200"></div>
+		</div>
+	</div>
+	<div class="el-form-item"><label class="el-form-item__label w100">密码</label>
+		<div class="el-form-item__content ml">
+			<div class="el-input"><input name="password" type="password" class="el-input__inner w200"></div>
+		</div>
+	</div>
+	<div class="el-form-item"><label class="el-form-item__label w100">记住我</label>
+		<div class="el-form-item__content ml">
+			<div class="el-checkbox"><input name="remeber" type="checkbox" class="el-checkbox__inner"/>1天</div>
+		</div>
+	</div>
+	<div class="el-form-item"><label class="el-form-item__label w100"></label>
+		<div class="el-form-item__content ml">
+			<button type="submit" class="el-button el-button--danger"><span>登录</span></button>
+		</div>
+	</div>
+	<div class="el-form-item"><label class="el-form-item__label w100"></label>
+		<div class="el-form-item__content ml" data-th-text="${param.error}">
+		</div>
+	</div>
+</form>
 </body>
 </html>

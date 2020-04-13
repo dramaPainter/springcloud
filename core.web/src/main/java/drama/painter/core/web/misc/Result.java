@@ -14,6 +14,10 @@ public class Result<T> {
 	public static Result SUCCESS = new Result(CODE_SUCCESS, OPERATION_SUCCEED);
 	public static Result FAIL = new Result(CODE_FAIL, OPERATION_FAILED);
 
+	public static <T> Result<T> toResult(T data) {
+		return new Result(0, "", data);
+	}
+
 	int code;
 	String message;
 	T data;

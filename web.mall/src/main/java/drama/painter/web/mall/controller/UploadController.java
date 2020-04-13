@@ -52,7 +52,7 @@ public class UploadController {
 	}
 
 	@ResponseBody
-	@PostMapping("/upload/images")
+	@PostMapping("/upload/file")
 	public Result images(@RequestParam("file") List<String> file, int id, String sign) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		return upload.upload(file, username, id, sign);

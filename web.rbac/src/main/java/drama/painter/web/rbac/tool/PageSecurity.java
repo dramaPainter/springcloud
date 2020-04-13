@@ -1,7 +1,9 @@
 package drama.painter.web.rbac.tool;
 
 import drama.painter.core.web.config.WebSecurity;
+import drama.painter.core.web.misc.Result;
 import drama.painter.core.web.misc.User;
+import drama.painter.core.web.tool.Json;
 import drama.painter.web.rbac.model.dto.oa.PageDTO;
 import drama.painter.web.rbac.model.dto.oa.StaffDTO;
 import drama.painter.web.rbac.service.inf.IOA;
@@ -61,10 +63,15 @@ class PageSecurity extends WebSecurity {
 
 @Slf4j(topic = "api")
 class AccessDeniedHandlerImpl implements AccessDeniedHandler {
+	/**
+	 * 如果想要跳转页面，可以使用以下语句：
+	 * request.setAttribute("msg", e.getMessage());
+	 * request.getRequestDispatcher("/login/error").forward(request, response);
+	 */
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-		request.setAttribute("msg", e.getMessage());
-		request.getRequestDispatcher("/login/error").forward(request, response);
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().write(Json.toJsonString(new Result(-1, e.getMessage())));
 	}
 }
 
@@ -80,7 +87,7 @@ class AccessImpl implements AccessDecisionManager {
 
 	@Override
 	public void decide(Authentication auth, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-		String url = ((FilterInvocation) o).getRequestUrl().toLowerCase();
+		String url = ((FilterInvocation) o).getRequest().getRequestURI().toLowerCase();
 		boolean authorized = urls.stream().anyMatch(u -> "/".equals(url) || url.startsWith(u.replace("**", "")));
 		if (authorized) {
 			return;

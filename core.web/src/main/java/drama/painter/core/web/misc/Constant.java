@@ -8,7 +8,7 @@ import drama.painter.core.web.tool.HttpLog;
  * @author murphy
  */
 public class Constant {
-	public static final byte PAGE_SIZE = 20;
+	public static final byte PAGE_SIZE = 10;
 
 	static final String NONE_PAGING_DATA = "<ul class='pager'><li style='line-height:30px'>暂无数据。</li></ul>";
 

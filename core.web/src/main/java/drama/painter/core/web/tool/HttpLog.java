@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Slf4j(topic = "http")
 public class HttpLog implements Filter {
-	static final String STATIC_FILE_PATH = "/images/";
+	static final String STATIC_FILE_PATH = "/file/";
 	static final List<String> HEADER = Arrays.asList("NGINX-REMOTE-ADDRESS", "X-FORWARDED-FOR", "X-Real-IpTable");
 	static final ThreadLocal<Long> TIME = new ThreadLocal();
 	static final ThreadLocal<String> POST = new ThreadLocal();

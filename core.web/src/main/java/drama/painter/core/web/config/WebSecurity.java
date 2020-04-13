@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 	public static final String LOGIN_URL = "/login/login";
 	static final String SECRET_KEY = "Web-Security-Client-Key";
-	protected static final String[] AUTHORIZED_URL = {"/", "/favicon.ico", "/images/**", "/login/**", "/actuator/**"};
+	protected static final String[] AUTHORIZED_URL = {"/", "/favicon.ico", "/file/**", "/login/**", "/actuator/**"};
 	protected Function<String, User> userProvider;
 
 	@Autowired
