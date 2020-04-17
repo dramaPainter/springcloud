@@ -4,6 +4,7 @@ import drama.painter.core.web.validator.IntegerValidator;
 import drama.painter.core.web.validator.Validator;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -27,23 +28,23 @@ public class EnumConverter implements ConverterFactory<String, BaseEnum> {
 	 */
 	public static <T extends BaseEnum> T toEnum(Class<T> targerType, String value) {
 		Predicate<T> predicate = INTEGER.validate(value) ? (x -> x.getValue() == Integer.parseInt(value)) : (x -> ((Enum)x).name().equals(value));
-		return Arrays.asList(targerType.getEnumConstants()).stream().filter(predicate).findAny().orElse(null);
+		return Arrays.stream(targerType.getEnumConstants()).filter(predicate).findAny().orElse(null);
 	}
 
 	@Override
-	public <T extends BaseEnum> Converter<String, T> getConverter(Class<T> targetType) {
+	public <T extends BaseEnum> Converter<String, T> getConverter(@NonNull Class<T> targetType) {
 		return new StringToEum(targetType);
 	}
 
 	static class StringToEum<T extends BaseEnum> implements Converter<String, T> {
-		Class<T> targerType;
+		final Class<T> targerType;
 
 		public StringToEum(Class<T> targerType) {
 			this.targerType = targerType;
 		}
 
 		@Override
-		public T convert(String source) {
+		public T convert(@NonNull String source) {
 			if (StringUtils.isEmpty(source)) {
 				return null;
 			}

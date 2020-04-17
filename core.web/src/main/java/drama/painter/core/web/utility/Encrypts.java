@@ -15,11 +15,11 @@ import java.security.MessageDigest;
 public class Encrypts {
 	static final int TWO = 2;
 	static BigInteger m_key;
-	static MessageDigest md5;
+	static final MessageDigest DIGEST;
 
 	static {
 		try {
-			md5 = MessageDigest.getInstance("MD5");
+			DIGEST = MessageDigest.getInstance("MD5");
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -88,7 +88,7 @@ public class Encrypts {
 		} catch (Exception e) {
 			return "";
 		}
-		return Strings.toByteString(md5.digest(byteArray));
+		return Strings.toByteString(DIGEST.digest(byteArray));
 	}
 
 	@SneakyThrows

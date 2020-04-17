@@ -1,42 +1,44 @@
 package drama.painter.core.web.misc;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * @author murphy
  */
+@AllArgsConstructor
 @Data
 public class Result<T> {
-	public static final int CODE_SUCCESS = 0;
-	public static final int CODE_FAIL = -1;
-	public static final String OPERATION_SUCCEED = "操作成功。";
-	public static final String OPERATION_FAILED = "操作失败，请稍候再重试。";
-	public static Result SUCCESS = new Result(CODE_SUCCESS, OPERATION_SUCCEED);
-	public static Result FAIL = new Result(CODE_FAIL, OPERATION_FAILED);
+    static final int CODE_SUCCESS = 0;
+    static final int CODE_FAIL = -1;
+    static final String OPERATION_SUCCEED = "操作成功。";
+    static final String OPERATION_FAILED = "操作失败，请稍候再重试。";
 
-	public static <T> Result<T> toResult(T data) {
-		return new Result(0, "", data);
-	}
+    public static Result SUCCESS = Result.toMessage(CODE_SUCCESS, OPERATION_SUCCEED);
+    public static Result FAIL = Result.toMessage(CODE_FAIL, OPERATION_FAILED);
 
-	int code;
-	String message;
-	T data;
+    public static <T> Result<T> toData(int code, T data) {
+        return new Result(code, null, data);
+    }
 
-	public Result() {
-		this(-1, "状态进入初始化。");
-	}
+    public static <T> Result<T> toMessage(int code, String message) {
+        return new Result(code, message, null);
+    }
 
-	public Result(int code, String message) {
-		this(code, message, null);
-	}
+    public static <T> Result<T> toSuccess(String message) {
+        return new Result(CODE_SUCCESS, message, null);
+    }
 
-	public Result(int code, String message, T data) {
-		this.code = code;
-		this.message = message;
-		this.data = data;
-	}
+    public static <T> Result<T> toFail(String message) {
+        return new Result(CODE_FAIL, message, null);
+    }
 
-	public int getCode() {
-		return code;
-	}
+    int code;
+    String message;
+    T data;
+
+    public Result() {
+        this.code = CODE_FAIL;
+        this.message = "状态进入初始化。";
+    }
 }

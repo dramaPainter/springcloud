@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author murphy
  */
 public class Caches {
-	static Map<String, CacheData> map = new ConcurrentHashMap<>();
+	static final Map<String, CacheData> MAP = new ConcurrentHashMap<>();
 
 	static {
 		new Timer("CacheExpireRemoveThread").schedule(new CacheExpireRemoveThread(), 0, 60 * 1000);
@@ -25,7 +25,7 @@ public class Caches {
 	 * @return 特定的数据
 	 */
 	public static <T> T get(String key) {
-		CacheData<T> data = map.get(key);
+		CacheData<T> data = MAP.get(key);
 		return data == null ? null : data.getData();
 	}
 
@@ -38,7 +38,7 @@ public class Caches {
 	 * @param <T>    任意数据类型
 	 */
 	public static <T> void add(String key, T data, int expire) {
-		map.put(key, new CacheData(data, expire));
+		MAP.put(key, new CacheData(data, expire));
 	}
 
 	/**
@@ -47,18 +47,18 @@ public class Caches {
 	 * @param key 缓存的键值
 	 */
 	public static void remove(String key) {
-		map.remove(key);
+		MAP.remove(key);
 	}
 
 	static class CacheExpireRemoveThread extends TimerTask {
 		@Override
 		public void run() {
-			for (Map.Entry<String, CacheData> entry : map.entrySet()) {
+			for (Map.Entry<String, CacheData> entry : MAP.entrySet()) {
 				if (entry.getValue().getExpire() == -1) {
 					continue;
 				}
 				if (entry.getValue().getSaveTime() + entry.getValue().getExpire() <= System.currentTimeMillis()) {
-					map.remove(entry.getKey());
+					MAP.remove(entry.getKey());
 				}
 			}
 		}

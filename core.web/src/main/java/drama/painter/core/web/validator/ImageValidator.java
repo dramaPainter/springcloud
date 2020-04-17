@@ -12,7 +12,7 @@ public class ImageValidator implements Validator {
 	@Override
 	public boolean validate(String value) {
 		final String val = value == null ? "" : trim(value).toLowerCase();
-		return EXT.stream().filter(x -> val.endsWith(x)).findAny().isPresent();
+		return EXT.stream().anyMatch(val::endsWith);
 	}
 }
 

@@ -1,7 +1,6 @@
 package drama.painter.web.rbac;
 
 import drama.painter.core.web.dal.DynamicDataSourceRegister;
-import drama.painter.web.rbac.tool.GlobalExceptionHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +12,7 @@ import org.springframework.context.annotation.Import;
  * @author murphy
  */
 @EnableEurekaClient
-@SpringBootApplication(scanBasePackages = "drama.painter")
+@SpringBootApplication
 @Import(DynamicDataSourceRegister.class)
 @MapperScan("drama.painter.web.rbac.mapper")
 @ComponentScan("drama.painter")

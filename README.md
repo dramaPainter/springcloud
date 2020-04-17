@@ -90,7 +90,13 @@ transport.tcp.port: 3953
 cd /Users/murphy/Downloads/soft/elasticsearch/slave3
 bin/elasticsearch -d
 ```
-* 三个实例已经全部安装完成，接口网址是
+* 三个实例已经全部安装完成，接下来测试实例是否正常。接口网址是
 * https://127.0.0.1:3961 或者 https://127.0.0.1:3962 或者 https://127.0.0.1:3963 
 * 用户名是elastic，密码是你修改的密码
-* 注意：由于谷歌浏览器不支持 https://127.0.0.1 建议使用其它浏览器接口网址。
+* 如果你使用谷歌浏览器，你可以下载ES的扩展程序[elasticsearch-head](https://chrome.google.com/webstore/detail/elasticsearch-head/ffmkiejjmecolpfloofpjologoblkegm)
+* 填写这三个网址的作何一个，然后做一下BASIC验证就能看到整个集群的状态了
+* 如果碰到浏览器提示 "连接不是私密连接的问题" 在Chrome的地址栏中输
+```
+chrome://flags/#allow-insecure-localhost
+```
+* 选择"启用"，重启Chrome浏览器。

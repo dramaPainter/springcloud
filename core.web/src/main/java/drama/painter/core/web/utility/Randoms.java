@@ -1,13 +1,14 @@
 package drama.painter.core.web.utility;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
  * @author murphy
  */
 public class Randoms {
-	static java.util.Random random = new java.util.Random();
-	static char[] chars = new char[]{
+	static final Random RANDOM = new Random();
+	static final char[] CHARS = new char[]{
 		'2', '3', '4', '5', '6', '7', '8', '9',
 		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j',
 		'k', 'm', 'n', 'p', 'q', 'r', 's', 't',
@@ -20,8 +21,8 @@ public class Randoms {
 	public static String getRandom(int count) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < count; i++) {
-			int s = random.nextInt(chars.length);
-			sb.append(chars[s]);
+			int s = RANDOM.nextInt(CHARS.length);
+			sb.append(CHARS[s]);
 		}
 		return sb.toString();
 	}
@@ -29,14 +30,14 @@ public class Randoms {
 	public static String getRandomNumber(int count) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < count; i++) {
-			int s = random.nextInt(8);
-			sb.append(chars[s]);
+			int s = RANDOM.nextInt(8);
+			sb.append(CHARS[s]);
 		}
 		return sb.toString();
 	}
 
 	public static int nextInt(int value) {
-		return random.nextInt(value);
+		return RANDOM.nextInt(value);
 	}
 
 	public static String getNonceString() {

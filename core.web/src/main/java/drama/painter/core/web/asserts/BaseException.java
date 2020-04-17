@@ -6,8 +6,8 @@ import drama.painter.core.web.enums.BaseEnum;
  * @author murphy
  */
 public class BaseException extends RuntimeException implements BaseEnum {
-	static final int GLOBAL_ERROR_CODE = -100;
-	int value;
+	static final int GLOBAL_ERROR_CODE = -999999;
+	final int value;
 	Object[] args;
 
 	public BaseException(int value, String msg) {

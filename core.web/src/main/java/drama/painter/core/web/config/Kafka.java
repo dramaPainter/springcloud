@@ -1,6 +1,5 @@
 package drama.painter.core.web.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,16 +21,19 @@ import java.util.Arrays;
  */
 @Component
 public class Kafka {
-	@Value("${kafka.server}")
-	String servers;
+	final KafkaProperties prop;
+	final ConsumerFactory consumerFactory;
 
-	@Autowired
-	KafkaProperties prop;
+	public Kafka(KafkaProperties prop, ConsumerFactory consumerFactory) {
+		this.prop = prop;
+		this.consumerFactory = consumerFactory;
+	}
+
 
 	@Bean(name = "kafkaConsumerManualFactory")
 	public KafkaListenerContainerFactory<?> kafkaConsumerManualFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, ?> factory = new ConcurrentKafkaListenerContainerFactory();
-		factory.setConsumerFactory(kafkaConsumerFactory());
+		factory.setConsumerFactory(consumerFactory);
 		factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
 		return factory;
 	}
@@ -39,13 +41,27 @@ public class Kafka {
 	@Bean(name = "kafkaConsumerBatchFactory")
 	public KafkaListenerContainerFactory<?> kafkaConsumerBatchFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, ?> factory = new ConcurrentKafkaListenerContainerFactory();
-		factory.setConsumerFactory(kafkaConsumerFactory());
+		factory.setConsumerFactory(consumerFactory);
 		factory.setConcurrency(1);
 		factory.setBatchListener(true);
 		ContainerProperties prop = factory.getContainerProperties();
 		prop.setPollTimeout(3000);
 		prop.setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
 		return factory;
+	}
+
+
+}
+
+@Component
+class KafkaBean {
+	@Value("${kafka.server}")
+	String servers;
+
+	final KafkaProperties prop;
+
+	public KafkaBean(KafkaProperties prop) {
+		this.prop = prop;
 	}
 
 	@Bean

@@ -19,7 +19,7 @@ import javax.annotation.PreDestroy;
 @Slf4j
 @Component
 public class FtpConfig {
-	private ObjectPool<FTPClient> pool;
+	private final ObjectPool<FTPClient> pool;
 
 	@Autowired
 	public FtpConfig(FtpConfigProperties props) {

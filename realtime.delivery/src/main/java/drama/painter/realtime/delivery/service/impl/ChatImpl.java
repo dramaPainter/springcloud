@@ -15,6 +15,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
@@ -24,11 +25,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author murphy
  */
 @Slf4j(topic = "pulsar")
+@Service
 public class ChatImpl implements IChat {
 	static final AtomicInteger ID = new AtomicInteger(0);
+	final Config.ElasticSearchClient es;
 
-	@Autowired
-	Config.ElasticSearchClient es;
+	public ChatImpl(Config.ElasticSearchClient es) {
+		this.es = es;
+	}
 
 	@PostConstruct
 	public void init() {

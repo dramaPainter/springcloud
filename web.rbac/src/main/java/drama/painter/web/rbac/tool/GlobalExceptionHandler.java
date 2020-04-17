@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public Map handler(HttpServletRequest request, Exception e) {
 		System.out.println("===========应用到所有@RequestMapping注解的方法，在其抛出Exception异常时执行");
-		Map map = new HashMap(5);
-		map.put("code", 404);
-		map.put("msg", e.getMessage());
+		Map map = new HashMap(2);
+		map.put("code", -1);
+		map.put("message", e.getMessage());
 		return map;
 	}
 }

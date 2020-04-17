@@ -50,6 +50,6 @@ public enum FtpEnum implements BaseAssert {
 	 */
 	UPLOAD_NOT_EXIST(-104,"请选择要上传的文件");
 
-	private int value;
-	private String name;
+	private final int value;
+	private final String name;
 }

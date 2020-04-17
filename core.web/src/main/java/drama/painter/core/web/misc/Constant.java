@@ -2,17 +2,17 @@ package drama.painter.core.web.misc;
 
 import drama.painter.core.web.utility.Strings;
 import org.apache.tomcat.util.buf.StringUtils;
-import drama.painter.core.web.tool.HttpLog;
+import drama.painter.core.web.config.HttpLog;
 
 /**
  * @author murphy
  */
 public class Constant {
-	public static final byte PAGE_SIZE = 10;
+	public static final byte PAGE_SIZE = 15;
 
 	static final String NONE_PAGING_DATA = "<ul class='pager'><li style='line-height:30px'>暂无数据。</li></ul>";
 
-	public static final String toPage(int page, int recordCount, int size, boolean showTotal) {
+	public static String toPage(int page, int recordCount, int size, boolean showTotal) {
 		if (recordCount == 0) {
 			return NONE_PAGING_DATA;
 		}
@@ -26,8 +26,8 @@ public class Constant {
 
 		int pageCount = (int) Math.ceil((double) recordCount / size);
 		int startPage = page < 10 ? 1 : page / 10 * 10;
-		int endPage = page < 10 ? (startPage + 9 > pageCount ? pageCount : startPage + 9) : (startPage + 10 > pageCount ? pageCount : startPage + 10);
-		endPage = endPage > pageCount ? pageCount : endPage;
+		int endPage = page < 10 ? (Math.min(startPage + 9, pageCount)) : (Math.min(startPage + 10, pageCount));
+		endPage = Math.min(endPage, pageCount);
 		String prevPageHref = page <= 1 ? "" : " href='?page=" + (page - 1) + param + "'";
 		String nextPageHref = page >= pageCount ? "" : " href='?page=" + (page + 1) + param + "'";
 

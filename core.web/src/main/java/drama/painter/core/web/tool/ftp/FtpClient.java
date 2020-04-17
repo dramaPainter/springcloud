@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 @Slf4j
 public class FtpClient implements PooledObjectFactory<FTPClient> {
-	private FtpConfig.FtpConfigProperties ftpConfig;
+	private final FtpConfig.FtpConfigProperties ftpConfig;
 
 	public FtpClient(FtpConfig.FtpConfigProperties props) {
 		ftpConfig = props;

@@ -4,8 +4,8 @@ package drama.painter.core.web.validator;
  * @author murphy
  */
 public class RangeValidator implements Validator {
-	float min;
-	float max;
+	final float min;
+	final float max;
 
 	public RangeValidator(byte min, byte max) {
 		this.min = min;

@@ -16,12 +16,12 @@ import java.security.cert.X509Certificate;
 public class Networks {
 	static final int CONNECTION_TIME_OUT = 30000;
 	static final String HTTPS_PROTOCOL = "https://";
-	static SSLContext sslContext;
+	static final SSLContext CONTEXT;
 
 	static {
 		try {
-			sslContext = SSLContext.getInstance("SSL");
-			sslContext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new SecureRandom());
+			CONTEXT = SSLContext.getInstance("SSL");
+			CONTEXT.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new SecureRandom());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -83,7 +83,7 @@ public class Networks {
 
 		if (url.toLowerCase().startsWith(HTTPS_PROTOCOL)) {
 			HttpsURLConnection https = (HttpsURLConnection) conn;
-			https.setSSLSocketFactory(sslContext.getSocketFactory());
+			https.setSSLSocketFactory(CONTEXT.getSocketFactory());
 			https.setHostnameVerifier((a, b) -> true);
 		}
 

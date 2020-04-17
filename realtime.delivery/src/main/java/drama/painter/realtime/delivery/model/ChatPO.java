@@ -43,7 +43,7 @@ public class ChatPO {
 	Boolean text;
 
 	/**
-	 * 客服消息(玩家消息)
+	 * 客服消息(用户消息)
 	 */
 	Boolean kefu;
 

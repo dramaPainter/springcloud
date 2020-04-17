@@ -47,7 +47,7 @@ class PageInterceptor implements Interceptor {
 	static final String SQL_LOG = "[分页]{}ms [查询]{}ms [语句]{}";
 	static final Map<String, ISqlLog> HANDLER = new HashMap(3);
 
-	static ThreadLocal<Long> PAGING = new ThreadLocal();
+	static final ThreadLocal<Long> PAGING = new ThreadLocal();
 
 	static {
 		HANDLER.put("prepare", new PrepareHandler());
@@ -166,7 +166,7 @@ class PageInterceptor implements Interceptor {
 					} else if (boundSql.hasAdditionalParameter(propertyName)) {
 						sql = parseSql(sql, boundSql.getAdditionalParameter(propertyName));
 					} else {
-						sql = sql.replaceFirst("\\?", "缺失");
+						sql = sql.replaceFirst("\\?", "<缺失>");
 					}
 				}
 			}

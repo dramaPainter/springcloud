@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 /**
  * @author murphy
  */
-@SuppressWarnings("ALL")
 public class Decrypt {
 	static final int HALF = 2;
 	static BigInteger m_key;

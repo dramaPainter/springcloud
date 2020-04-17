@@ -1,7 +1,6 @@
 package drama.painter.core.web.dal;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.jdbc.DataSourceHealthIndicator;
 import org.springframework.stereotype.Component;
@@ -15,8 +14,11 @@ import javax.sql.DataSource;
  */
 @Component("dbHealthIndicator")
 class DynamicDataSourceHealthIndicator extends DataSourceHealthIndicator implements InitializingBean {
-	@Autowired
-	DataSource mySource;
+	final DataSource mySource;
+
+	public DynamicDataSourceHealthIndicator(DataSource mySource) {
+		this.mySource = mySource;
+	}
 
 	@Override
 	protected void doHealthCheck(Health.Builder builder) throws Exception {

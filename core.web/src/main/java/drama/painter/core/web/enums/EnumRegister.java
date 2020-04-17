@@ -10,8 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Component
 class EnumRegister implements WebMvcConfigurer {
+	final EnumConverter enumConvertFactory;
+
 	@Autowired
-	EnumConverter enumConvertFactory;
+	public EnumRegister(EnumConverter enumConvertFactory) {
+		this.enumConvertFactory = enumConvertFactory;
+	}
 
 	@Override
 	public void addFormatters(FormatterRegistry registry) {

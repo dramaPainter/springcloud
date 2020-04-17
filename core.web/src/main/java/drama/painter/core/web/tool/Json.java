@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * @author murphy
  */
 public final class Json {
-	static ObjectMapper mapper;
+	static final ObjectMapper MAPPER;
 
 	static {
-		mapper = new ObjectMapper();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+		MAPPER = new ObjectMapper();
+		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 			.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
 			.configure(SerializationFeature.INDENT_OUTPUT, true);
 	}
@@ -26,7 +26,7 @@ public final class Json {
 	 */
 	public static <T> T parseObject(String json, Class<T> valueType) {
 		try {
-			return mapper.readValue(json, valueType);
+			return MAPPER.readValue(json, valueType);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -39,7 +39,7 @@ public final class Json {
 	 */
 	public static <T> T parseObject(String json, TypeReference<T> reference) {
 		try {
-			return mapper.readValue(json, reference);
+			return MAPPER.readValue(json, reference);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -52,7 +52,7 @@ public final class Json {
 	 */
 	public static <T> T parseByteObject(byte[] json, Class<T> valueType) {
 		try {
-			return mapper.readValue(json, valueType);
+			return MAPPER.readValue(json, valueType);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -65,7 +65,7 @@ public final class Json {
 	 */
 	public static <T> T parseByteObject(byte[] json, TypeReference<T> reference) {
 		try {
-			return mapper.readValue(json, reference);
+			return MAPPER.readValue(json, reference);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -73,7 +73,7 @@ public final class Json {
 
 	public static String toJsonString(Object obj) {
 		try {
-			return mapper.writeValueAsString(obj);
+			return MAPPER.writeValueAsString(obj);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

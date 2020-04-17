@@ -21,10 +21,18 @@
 	</properties>
 
 	<modules>
+		<module>server.eureka</module>
+		<module>server.config</module>
 		<module>core.web</module>
+		<module>realtime.delivery</module>
+		<module>web.rbac</module>
 	</modules>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

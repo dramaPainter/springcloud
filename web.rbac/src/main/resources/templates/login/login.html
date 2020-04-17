@@ -1,41 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
-	<meta charset="UTF-8"/>
-	<title>聊天登录</title>
-	<link href="/file/vue/element-ui.css" rel="stylesheet"/>
-	<style>
-		.w100 { width: 100px; }
-		.w200 { width: 200px; }
-		.ml { margin-left: 100px; }
-	</style>
+    <meta charset="UTF-8"/>
+    <title>聊天登录</title>
+    <link href="/file/vue/element/element-ui.css" rel="stylesheet"/>
+    <style>
+        .w100 {
+            width: 100px;
+        }
+
+        .w200 {
+            width: 200px;
+        }
+
+        .ml {
+            margin-left: 100px;
+        }
+    </style>
 </head>
 <body>
 <form action="/login/security" method="post" class="el-form demo-ruleForm">
-	<div class="el-form-item"><label class="el-form-item__label w100">用户名</label>
-		<div class="el-form-item__content ml">
-			<div class="el-input"><input name="username" type="text" class="el-input__inner w200"></div>
-		</div>
-	</div>
-	<div class="el-form-item"><label class="el-form-item__label w100">密码</label>
-		<div class="el-form-item__content ml">
-			<div class="el-input"><input name="password" type="password" class="el-input__inner w200"></div>
-		</div>
-	</div>
-	<div class="el-form-item"><label class="el-form-item__label w100">记住我</label>
-		<div class="el-form-item__content ml">
-			<div class="el-checkbox"><input name="remeber" type="checkbox" class="el-checkbox__inner"/>1天</div>
-		</div>
-	</div>
-	<div class="el-form-item"><label class="el-form-item__label w100"></label>
-		<div class="el-form-item__content ml">
-			<button type="submit" class="el-button el-button--danger"><span>登录</span></button>
-		</div>
-	</div>
-	<div class="el-form-item"><label class="el-form-item__label w100"></label>
-		<div class="el-form-item__content ml" data-th-text="${param.error}">
-		</div>
-	</div>
+    <div class="el-form-item"><label class="el-form-item__label w100">用户名</label>
+        <div class="el-form-item__content ml">
+            <div class="el-input">
+                <label><input name="username" type="text" class="el-input__inner w200"/></label>
+            </div>
+        </div>
+    </div>
+    <div class="el-form-item"><label class="el-form-item__label w100">密码</label>
+        <div class="el-form-item__content ml">
+            <div class="el-input">
+                <label><input name="password" type="password" class="el-input__inner w200"/></label>
+            </div>
+        </div>
+    </div>
+    <div class="el-form-item"><label class="el-form-item__label w100">记住我</label>
+        <div class="el-form-item__content ml">
+            <div class="el-checkbox">
+                <label><input name="remember" type="checkbox" class="el-checkbox__inner"/>1天</label>
+            </div>
+        </div>
+    </div>
+    <div class="el-form-item"><label class="el-form-item__label w100"></label>
+        <div class="el-form-item__content ml">
+            <button type="submit" class="el-button el-button--danger">登录</button>
+        </div>
+    </div>
+    <div class="el-form-item"><label class="el-form-item__label w100"></label>
+        <div class="el-form-item__content ml" data-th-text="${param.error}">
+        </div>
+    </div>
 </form>
 </body>
 </html>
