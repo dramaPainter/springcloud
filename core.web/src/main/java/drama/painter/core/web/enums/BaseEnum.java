@@ -1,5 +1,7 @@
 package drama.painter.core.web.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * @author murphy
  */
@@ -9,6 +11,7 @@ public interface BaseEnum {
 	 *
 	 * @return
 	 */
+	@JsonValue
 	int getValue();
 
 	/**

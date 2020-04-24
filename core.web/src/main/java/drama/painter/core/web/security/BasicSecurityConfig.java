@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * 使用BASIC验证模式
+ *
  * @author murphy
  */
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,7 +28,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         User user = new User();
-        user.setUsername(username);
+        user.setName(username);
         user.setPassword(password);
         auth.inMemoryAuthentication().withUser(new PageUserDetails(user)).passwordEncoder(new BCryptPasswordEncoder());
     }

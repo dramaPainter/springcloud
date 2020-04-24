@@ -14,69 +14,60 @@ import java.time.format.DateTimeFormatter;
  * @author murphy
  */
 public class Dates {
-	static final Validator EMPTY = new EmptyValidator();
-	static final Validator SCAN = new DateValidator();
-	static final DateTimeFormatter MDF = DateTimeFormatter.ofPattern("yyyyMM");
-	static final DateTimeFormatter SDF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	static final DateTimeFormatter FDF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	static final DateTimeFormatter DDF = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-	static final ZoneId CHINA = ZoneId.of("Asia/Shanghai");
-	static final ZoneOffset OFFSET = ZoneOffset.ofHours(8);
+    static final Validator SCAN = new DateValidator();
+    static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    static final DateTimeFormatter DATETIME_MILLIS_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss,SSS");
+    static final DateTimeFormatter DATE_NUMBER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
+    static final DateTimeFormatter DATETIME_NUMBER_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+    static final DateTimeFormatter DATETIME_NUMBER_MILLIS_FORMAT = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+    static final ZoneId CHINA = ZoneId.of("Asia/Shanghai");
+    static final ZoneOffset OFFSET = ZoneOffset.ofHours(8);
 
-	public static String toMonth(long time) {
-		return MDF.format(Instant.ofEpochSecond(time).atZone(CHINA).toLocalDateTime());
-	}
+    public static String toDate() {
+        return DATE_FORMAT.format(LocalDateTime.now(CHINA));
+    }
 
-	public static String toDate(long time) {
-		return SDF.format(Instant.ofEpochSecond(time).atZone(CHINA).toLocalDateTime());
-	}
+    public static String toDateTime() {
+        return DATETIME_FORMAT.format(LocalDateTime.now(CHINA));
+    }
 
-	public static String toDateTime(long time) {
-		return FDF.format(Instant.ofEpochSecond(time).atZone(CHINA).toLocalDateTime());
-	}
+    public static String toDateTimeMillis() {
+        return DATETIME_MILLIS_FORMAT.format(LocalDateTime.now(CHINA));
+    }
 
-	public static String toDigitalTime(long time) {
-		return DDF.format(Instant.ofEpochSecond(time).atZone(CHINA).toLocalDateTime());
-	}
+    public static String toDateNumber() {
+        return DATE_NUMBER_FORMAT.format(LocalDateTime.now(CHINA));
+    }
 
-	public static long toLong(String datetime) {
-		datetime = datetime.contains(":") ? datetime : datetime.trim() + " 00:00:00";
-		return LocalDateTime.parse(datetime, FDF).toEpochSecond(OFFSET);
-	}
+    public static String toDateTimeNumber() {
+        return DATETIME_NUMBER_FORMAT.format(LocalDateTime.now(CHINA));
+    }
 
-	public static long addDate(String date, int days) {
-		return toLong(date) + days * 3600 * 24;
-	}
+    public static String toDateTimeMillisNumber() {
+        return DATETIME_NUMBER_MILLIS_FORMAT.format(LocalDateTime.now(CHINA));
+    }
 
-	public static String getNowDate() {
-		return SDF.format(LocalDateTime.now(CHINA));
-	}
+    public static String modify(String date, int minute, DateTimeType returnType, String defaultValue) {
+        if (SCAN.validate(date)) {
+            DateTimeFormatter formatter = date.contains(",") ? DATETIME_MILLIS_FORMAT : (date.contains(":") ? DATETIME_FORMAT : DATE_FORMAT);
+            LocalDateTime time = LocalDateTime.parse(date, formatter).plusMinutes(minute);
+            switch (returnType) {
+                case DATE:
+                    return time.format(DATE_FORMAT);
+                case DATE_TIME:
+                    return time.format(DATETIME_FORMAT);
+                case DATE_TIME_MILLIS:
+                    return time.format(DATETIME_MILLIS_FORMAT);
+                default:
+                    throw new RuntimeException("没有可用的日期格式化类型");
+            }
+        } else {
+            return defaultValue;
+        }
+    }
 
-	public static long getNowLong() {
-		return LocalDateTime.now(CHINA).toEpochSecond(OFFSET);
-	}
-
-	public static String getNowDateTime() {
-		return FDF.format(LocalDateTime.now());
-	}
-
-	public static String get5minDate(String date, int minute) {
-		long time = LocalDateTime.parse(date, SDF).toEpochSecond(OFFSET);
-		time = time / (minute * 60) * (minute * 60);
-		return FDF.format(Instant.ofEpochMilli(time * 1000).atZone(CHINA).toLocalDateTime());
-	}
-
-	public static long getStartTime(String startTime) {
-		return getStartTime(startTime, 0);
-	}
-
-	public static long getStartTime(String startTime, int days) {
-		startTime = EMPTY.validate(startTime) ? "" : startTime.trim();
-		return (SCAN.validate(startTime) ? toLong(startTime) : toLong(getNowDate())) - days * 24 * 3600;
-	}
-
-	public static long getEndTime(String endTime) {
-		endTime = EMPTY.validate(endTime) ? "" : endTime.trim();
-		return SCAN.validate(endTime) ? toLong(endTime) : System.currentTimeMillis() / 1000;
-	}
+    public enum DateTimeType {
+        DATE, DATE_TIME, DATE_TIME_MILLIS
+    }
 }

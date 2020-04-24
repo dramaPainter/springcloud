@@ -1,13 +1,14 @@
 package drama.painter.core.web.config;
 
-import drama.painter.core.web.tool.Certification;
-import drama.painter.core.web.tool.Json;
+import drama.painter.core.web.utility.Certification;
+import drama.painter.core.web.utility.Json;
 import drama.painter.core.web.utility.Encrypts;
 import lombok.Data;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -16,6 +17,8 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -116,6 +119,17 @@ public class ElasticSearch {
                 long replyed = response.getStatus().getSuccessfullyProcessed();
                 String msg = String.format("有部分消息没有处理:%d(总:%d)", replyed, response.getTotal());
                 throw new IOException(msg);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(UpdateRequest request) {
+        try {
+            UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
+            if (response.getResult()  != DocWriteResponse.Result.UPDATED) {
+                throw new IOException(response.getResult().name());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

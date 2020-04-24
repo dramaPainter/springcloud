@@ -18,14 +18,13 @@ public class Strings {
 		return StringUtils.isEmpty(val) ? "" : val.trim();
 	}
 
-
 	public static long getOrderId(String prefix) {
 		int value;
 		synchronized (LOCK) {
 			INCREMENT = INCREMENT == 999 ? 0 : ++INCREMENT;
 			value = INCREMENT;
 		}
-		String time = Dates.toDigitalTime(Instant.now().getEpochSecond());
+		String time = Dates.toDateTimeNumber();
 		String suffix = padLeft(String.valueOf(value), 3, '0');
 		return Long.parseLong(prefix.concat(time).concat(suffix));
 	}

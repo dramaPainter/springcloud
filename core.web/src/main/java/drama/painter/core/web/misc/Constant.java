@@ -2,7 +2,8 @@ package drama.painter.core.web.misc;
 
 import drama.painter.core.web.utility.Strings;
 import org.apache.tomcat.util.buf.StringUtils;
-import drama.painter.core.web.config.HttpLog;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author murphy
@@ -17,7 +18,8 @@ public class Constant {
 			return NONE_PAGING_DATA;
 		}
 
-		String param = HttpLog.getParameterMap().entrySet().stream()
+		ServletRequestAttributes util = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		String param = util.getRequest().getParameterMap().entrySet().stream()
 			.filter(x -> !"page".equals(x.getKey().toLowerCase()))
 			.map(p -> p.getKey() + "=" + Strings.urlencode(StringUtils.join(p.getValue())))
 			.reduce((p1, p2) -> p1 + "&" + p2)

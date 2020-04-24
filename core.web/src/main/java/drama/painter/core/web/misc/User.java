@@ -1,32 +1,41 @@
 package drama.painter.core.web.misc;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import drama.painter.core.web.enums.PlatformEnum;
+import drama.painter.core.web.enums.StaffTypeEnum;
+import drama.painter.core.web.enums.StatusEnum;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import org.springframework.util.StringUtils;
+
+import javax.validation.constraints.NotNull;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author murphy
  */
 @Data
-@NoArgsConstructor
 public class User {
-    public User(Integer userid, String username) {
-        this.userid = userid;
-        this.username = username;
-    }
-
-    Integer userid;
-    String username;
-    String nickname;
-    String headimage;
-    Byte status;
-
-    @JsonIgnore
+    @NotNull(message = "员工ID不能为空")
+    Integer id;
+    String name;
+    String alias;
+    String avatar;
+    StatusEnum status;
+    PlatformEnum platform;
+    StaffTypeEnum type;
     String password;
-    @JsonIgnore
     String salt;
-    @JsonIgnore
-    String ip;
-    @JsonIgnore
-    String permission;
+
+    @Getter
+    List<String> permission;
+
+    public void setPermission(String permission) {
+        if (StringUtils.isEmpty(permission)) {
+            this.permission = Collections.EMPTY_LIST;
+        } else {
+            this.permission = Arrays.asList(permission.split(","));
+        }
+    }
 }

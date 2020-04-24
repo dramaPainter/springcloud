@@ -21,10 +21,9 @@ public class PageUserDetails implements UserDetails {
 
     public PageUserDetails(User user) {
         this.user = user;
-        this.auth = StringUtils.isEmpty(user.getPermission()) ? Collections.emptyList() :
-                Arrays.stream(user.getPermission().split(","))
-                        .map(o -> new SimpleGrantedAuthority("ROLE_" + o))
-                        .collect(Collectors.toList());
+        this.auth = user.getPermission().stream()
+                .map(o -> new SimpleGrantedAuthority("ROLE_" + o))
+                .collect(Collectors.toList());
     }
 
     public User getUser() {
@@ -43,7 +42,7 @@ public class PageUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return user.getName();
     }
 
     @Override

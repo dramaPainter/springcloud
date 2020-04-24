@@ -3,53 +3,48 @@
 <head>
     <meta charset="UTF-8"/>
     <title>聊天登录</title>
-    <link href="/file/vue/element/element-ui.css" rel="stylesheet"/>
-    <style>
-        .w100 {
-            width: 100px;
-        }
-
-        .w200 {
-            width: 200px;
-        }
-
-        .ml {
-            margin-left: 100px;
-        }
-    </style>
+    <link href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" rel="stylesheet"/>
 </head>
 <body>
-<form action="/login/security" method="post" class="el-form demo-ruleForm">
-    <div class="el-form-item"><label class="el-form-item__label w100">用户名</label>
-        <div class="el-form-item__content ml">
+<form action="/login/security" method="post" class="el-form demo-ruleForm" onsubmit="return false">
+    <div class="el-form-item"><label class="el-form-item__label" style="width: 100px">用户名</label>
+        <div class="el-form-item__content" style="margin-left: 100px">
             <div class="el-input">
-                <label><input name="username" type="text" class="el-input__inner w200"/></label>
+                <label><input name="username" type="text" class="el-input__inner" style="width: 200px"/></label>
             </div>
         </div>
     </div>
-    <div class="el-form-item"><label class="el-form-item__label w100">密码</label>
-        <div class="el-form-item__content ml">
+    <div class="el-form-item"><label class="el-form-item__label" style="width: 100px">密码</label>
+        <div class="el-form-item__content" style="margin-left: 100px">
             <div class="el-input">
-                <label><input name="password" type="password" class="el-input__inner w200"/></label>
+                <label><input id="password" name="password" type="password" class="el-input__inner" style="width: 200px"/></label>
             </div>
         </div>
     </div>
-    <div class="el-form-item"><label class="el-form-item__label w100">记住我</label>
-        <div class="el-form-item__content ml">
+    <div class="el-form-item"><label class="el-form-item__label" style="width: 100px">记住我</label>
+        <div class="el-form-item__content" style="margin-left: 100px">
             <div class="el-checkbox">
                 <label><input name="remember" type="checkbox" class="el-checkbox__inner"/>1天</label>
             </div>
         </div>
     </div>
-    <div class="el-form-item"><label class="el-form-item__label w100"></label>
-        <div class="el-form-item__content ml">
-            <button type="submit" class="el-button el-button--danger">登录</button>
+    <div class="el-form-item"><label class="el-form-item__label" style="width: 100px"></label>
+        <div class="el-form-item__content" style="margin-left: 100px">
+            <button type="button" class="el-button el-button--danger" onclick="onSubmit()">登录</button>
         </div>
     </div>
-    <div class="el-form-item"><label class="el-form-item__label w100"></label>
+    <div class="el-form-item"><label class="el-form-item__label" style="width: 100px"></label>
         <div class="el-form-item__content ml" data-th-text="${param.error}">
         </div>
     </div>
 </form>
+<script src="/js/md5.js"></script>
+<script>
+    function onSubmit() {
+        var pwd = document.getElementById("password");
+        pwd.value = MD5(pwd.value);
+        document.forms[0].submit();
+    }
+</script>
 </body>
 </html>

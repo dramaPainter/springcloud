@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 @EnableEurekaClient
 @SpringBootApplication
 @Import(DynamicDataSourceRegister.class)
-@ComponentScan("drama.painter")
+@ComponentScan({"drama.painter", "org.springframework.kafka.core"})
 public class RealtimeDeliveryApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RealtimeDeliveryApplication.class, args);

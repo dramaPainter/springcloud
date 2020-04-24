@@ -1,5 +1,7 @@
 package drama.painter.web.rbac.tool;
 
+import drama.painter.core.web.misc.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +16,7 @@ import java.util.Map;
  * @author jim
  * @date 2017/11/23
  */
+@Slf4j(topic = "api")
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	/**
@@ -26,11 +29,8 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(value = Exception.class)
 	@ResponseBody
-	public Map handler(HttpServletRequest request, Exception e) {
-		System.out.println("===========应用到所有@RequestMapping注解的方法，在其抛出Exception异常时执行");
-		Map map = new HashMap(2);
-		map.put("code", -1);
-		map.put("message", e.getMessage());
-		return map;
+	public Result handler(Exception e) {
+		log.error("未处理的错误", e);
+		return Result.toMessage(-1, e.getMessage());
 	}
 }

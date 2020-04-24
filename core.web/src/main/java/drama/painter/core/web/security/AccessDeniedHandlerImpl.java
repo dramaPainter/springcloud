@@ -1,7 +1,7 @@
 package drama.painter.core.web.security;
 
 import drama.painter.core.web.misc.Result;
-import drama.painter.core.web.tool.Json;
+import drama.painter.core.web.utility.Json;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 

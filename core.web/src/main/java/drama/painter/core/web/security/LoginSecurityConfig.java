@@ -1,7 +1,7 @@
 package drama.painter.core.web.security;
 
 import drama.painter.core.web.misc.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,21 +24,31 @@ import java.util.stream.Collectors;
  * @author murphy
  */
 public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
+    static final PasswordAuth PASSWORD_AUTH = new PasswordAuth();
     static final String LOGIN_URL = "/login/login";
     static final String SECRET_KEY = "Web-Security-Client-Key";
     protected Function<String, User> userProvider;
-    public static final String[] AUTHORIZED_URL = {"/", "/favicon.ico", "/file/**", "/login/**", "/actuator/**"};
-    public static final List<String> AUTHORIZED_URL_LIST = Arrays.stream(AUTHORIZED_URL)
+    public static final String AUTHORIZED_URL_PATH = "/login/";
+    public static final String[] AUTHORIZED_SUFFIX = {"/",
+            "*.ico", "*.jpg", "*.jpeg", "*.png", "*.gif",
+            "*.html", "*.htm", "*.xml", "*.js", "*.json",
+            "*.css", "*.woff", "*.ttf", "*.svg",
+            "*.rar", "*.zip", "*.gz", "*.ipa", "*.apk", "*.plist",
+            "*.xls", "*.xlsx", "*.doc", "*.docx", "*.pdf",
+            "*.mp3", "*.mp4", "*.mov", "*.ogg", "*.m3u",
+            "*.log", "*.txt"
+    };
+    public static final List<String> AUTHORIZED_SUFFIX_ITEM = Arrays.stream(AUTHORIZED_SUFFIX)
             .filter(o -> !"/".equals(o))
-            .map(o -> o.replace("**", ""))
+            .map(o -> o.replace("*", ""))
             .collect(Collectors.toList());
 
-    @Autowired
-    PasswordAuthImpl auth;
+    @Value("${spring.application.name}")
+    String project;
 
     @PostConstruct
     public void init() {
-        auth.config(userProvider);
+        PASSWORD_AUTH.config(userProvider);
     }
 
     @Override
@@ -49,25 +59,27 @@ public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable().and().csrf().disable()
-                .authenticationProvider(auth).authorizeRequests()
-                .antMatchers(AUTHORIZED_URL).permitAll().anyRequest().authenticated()
+                .authenticationProvider(PASSWORD_AUTH).authorizeRequests()
+                .antMatchers(AUTHORIZED_SUFFIX).permitAll()
+                .antMatchers(AUTHORIZED_URL_PATH + "**").permitAll()
+                .anyRequest().authenticated()
                 .and().rememberMe().rememberMeServices(getRememberMeServices())
                 .and().logout().logoutUrl("/login/logout").logoutSuccessUrl("/")
                 .invalidateHttpSession(true).clearAuthentication(true)
                 .and().formLogin().loginProcessingUrl("/login/security").loginPage(LOGIN_URL).defaultSuccessUrl("/")
-                .successHandler(new SuccessHandler()).failureHandler(new FailureHandler())
+                .successHandler(new SuccessHandler(project)).failureHandler(new FailureHandler(project))
                 .permitAll();
     }
 
     TokenBasedRememberMeServices getRememberMeServices() {
-        TokenBasedRememberMeServices services = new TokenBasedRememberMeServices(SECRET_KEY, auth);
+        TokenBasedRememberMeServices services = new TokenBasedRememberMeServices(SECRET_KEY, PASSWORD_AUTH);
         services.setCookieName("remember");
         services.setParameter("remember");
         services.setTokenValiditySeconds(24 * 3600);
         return services;
     }
 
-    static class BadLoginException extends AuthenticationException {
+    public static class BadLoginException extends AuthenticationException {
         public BadLoginException(String msg) {
             super(msg);
         }

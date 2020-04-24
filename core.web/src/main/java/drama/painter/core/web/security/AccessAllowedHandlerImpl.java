@@ -12,7 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static drama.painter.core.web.security.LoginSecurityConfig.AUTHORIZED_URL_LIST;
+import static drama.painter.core.web.security.LoginSecurityConfig.AUTHORIZED_URL_PATH;
+import static drama.painter.core.web.security.LoginSecurityConfig.AUTHORIZED_SUFFIX_ITEM;
 
 class AccessAllowedHandlerImpl implements AccessDecisionManager {
     final List<Permission> pages;
@@ -24,8 +25,10 @@ class AccessAllowedHandlerImpl implements AccessDecisionManager {
     @Override
     public void decide(Authentication auth, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
         String url = ((FilterInvocation) o).getRequest().getRequestURI().toLowerCase();
-        boolean authorized = AUTHORIZED_URL_LIST.stream().anyMatch(u -> "/".equals(url) || url.startsWith(u));
+        boolean authorized = AUTHORIZED_SUFFIX_ITEM.stream().anyMatch(u -> "/".equals(url) || url.endsWith(u));
         if (authorized) {
+            return;
+        } else if (url.startsWith(AUTHORIZED_URL_PATH)) {
             return;
         }
 
@@ -36,7 +39,7 @@ class AccessAllowedHandlerImpl implements AccessDecisionManager {
             if (Objects.nonNull(p)) {
                 boolean present = auth.getAuthorities().stream().anyMatch(m -> m.getAuthority().equals("ROLE_" + p.getId()));
                 if (!present) {
-                    throw new AccessDeniedException("您无权访问本页。");
+                    throw new AccessDeniedException("您无权" + p.getName());
                 }
             } else {
                 throw new AccessDeniedException("页面不存在。");
@@ -44,13 +47,13 @@ class AccessAllowedHandlerImpl implements AccessDecisionManager {
         }
     }
 
-     @Override
-     public boolean supports(ConfigAttribute configAttribute) {
-         return true;
-     }
+    @Override
+    public boolean supports(ConfigAttribute configAttribute) {
+        return true;
+    }
 
-     @Override
-     public boolean supports(Class<?> aClass) {
-         return true;
-     }
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return true;
+    }
 }

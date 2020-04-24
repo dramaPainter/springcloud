@@ -2,7 +2,7 @@ package drama.painter.web.rbac.mapper;
 
 import drama.painter.core.web.misc.Permission;
 import drama.painter.core.web.misc.User;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,22 +12,61 @@ import java.util.List;
  */
 @Repository
 public interface OaMapper {
-	/**
-	 * 查询所有员工帐号
-	 *
-	 * @return
-	 */
-	@Select({"SELECT userid, username, nickname, loginpass AS password, salt, headimage, status, ",
-		"(SELECT GROUP_CONCAT(INET_NTOA(ip)) FROM oa.staff_ip si WHERE si.userid = s.userid) AS ip, ",
-		"(SELECT GROUP_CONCAT(pageid) FROM oa.staff_page sp WHERE sp.userid = s.userid) AS permission ",
-		"FROM oa.staff s"})
-	List<User> getStaff();
+    /**
+     * 查询所有员工帐号
+     *
+     * @return
+     */
+    @Select({"SELECT id, name, alias, password, salt, avatar, status, type, platform, ",
+            "(SELECT GROUP_CONCAT(permission) FROM zero.staff_permission sp WHERE sp.userid = s.id) AS permission ",
+            "FROM zero.staff s ORDER BY id DESC"})
+    List<User> getStaff();
 
-	/**
-	 * 查询所有页面
-	 *
-	 * @return
-	 */
-	@Select({"SELECT * FROM oa.page WHERE status = 1"})
-	List<Permission> getPage();
+    /**
+     * 查询所有页面
+     *
+     * @return
+     */
+    @Select("SELECT * FROM zero.permission WHERE status = 1")
+    List<Permission> getPermission();
+
+    /**
+     * 添加员工资料
+     *
+     * @param staff 员工资料
+     */
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert({"INSERT INTO zero.staff (name, password, salt, alias, avatar, status, type, platform) VALUES ",
+            "(#{name}, #{password}, #{salt}, #{alias}, #{avatar}, #{status}, #{type}, #{platform})"})
+    void insertStaff(User staff);
+
+    /**
+     * 设置员工权限
+     *
+     * @param staff 员工资料
+     */
+    @Insert({"<script>INSERT INTO zero.staff_permission (userid, permission) VALUES ",
+            "<foreach item='item' collection='permission' separator=','>",
+            "(#{userid}, #{item})",
+            "</foreach></script>"})
+    void insertStaffPermission(@Param("userid") int userid, @Param("permission") List<String> permission);
+
+    /**
+     * 设置员工权限
+     *
+     * @param staff 员工资料
+     */
+    @Delete("DELETE FROM zero.staff_permission WHERE userid = #{userid}")
+    void removeStaffPermission(int userid);
+
+    /**
+     * 更新员工资料
+     *
+     * @param staff 员工资料
+     */
+    @Update({"UPDATE zero.staff SET ",
+            "password = #{password}, alias = #{alias}, avatar = #{avatar}, ",
+            "status = #{status}, type = #{type}, platform = #{platform} ",
+            "WHERE id = #{id}"})
+    void saveStaff(User staff);
 }

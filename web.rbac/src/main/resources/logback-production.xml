@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false">
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
-		</encoder>
-	</appender>
-
 	<appender name="api" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.path}/api/api.log</file>
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${log.path}/api/api.%d{yyyyMMdd}.zip</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
-		</encoder>
-	</appender>
-
-	<appender name="kefu" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${log.path}/kefu/kefu.log</file>
-		<append>true</append>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log.path}/kefu/kefu.%d{yyyyMMdd}.zip</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
@@ -42,6 +24,10 @@
 		</encoder>
 	</appender>
 
+	<appender name="http" class="drama.painter.core.web.log.ElasticSearchLogAppender">
+		<format>HTTP</format>
+	</appender>
+<!--
 	<appender name="http" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.path}/http/http.log</file>
 		<append>true</append>
@@ -50,20 +36,16 @@
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
 		<encoder>
-			<pattern>%date [%.3thread] - %msg%n</pattern>
+			<pattern>%date - %msg%n</pattern>
 		</encoder>
 	</appender>
-
+-->
 	<root level="INFO">
 		<appender-ref ref="api"/>
 	</root>
 
 	<logger name="sql" level="DEBUG" additivity="false">
 		<appender-ref ref="sql"/>
-	</logger>
-
-	<logger name="kefu" level="DEBUG" additivity="false">
-		<appender-ref ref="kefu"/>
 	</logger>
 
 	<logger name="http" level="DEBUG" additivity="false">

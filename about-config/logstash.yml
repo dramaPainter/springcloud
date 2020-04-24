@@ -1,0 +1,36 @@
+# config/pipelines.yml
+-   pipeline.id: http
+    queue.type: persisted
+    config.string: |
+        input {
+            file {
+                path => "/private/demo/log/http/http.log"
+                codec => multiline {
+                    pattern => "^%{TIMESTAMP_ISO8601}"
+                    negate => true
+                    what => previous
+                }
+            }
+        }
+
+        filter {
+        	mutate {
+        	    add_field => { "[@metadata][indexDate]" => "%{+YYYYMM}" }
+        	}
+
+        	grok {
+                match => { "message" => "%{TIMESTAMP_ISO8601:timestamp} - %{USERNAME:project} %{INT:timespan} %{USERNAME:username} %{USERNAME:session} %{IP:ip} - %{URIPATH:url} - (?<parameter>NULL|\w+\([^\n]+\)|(\w+=[^\n]+\&?)*) - (?<result>[^\n]+)" }
+               	remove_field => ["@version", "@timestamp", "host", "path", "tags", "message"]
+            }
+        }
+
+        output {
+            elasticsearch {
+                hosts => ["https://127.0.0.1:3961"]
+        		user => "elastic"
+        		password => "123123"
+        		ssl => true
+        		cacert => "/Users/murphy/Downloads/soft/elasticsearch/master/config/ca.crt"
+                index => "operation-%{[@metadata][indexDate]}"
+            }
+        }
