@@ -1,7 +1,10 @@
 package drama.painter.web.rbac.service.impl;
 
 import drama.painter.core.web.ftp.upload.IUpload;
-import drama.painter.core.web.misc.*;
+import drama.painter.core.web.misc.Constant;
+import drama.painter.core.web.misc.Permission;
+import drama.painter.core.web.misc.Result;
+import drama.painter.core.web.misc.User;
 import drama.painter.core.web.utility.Encrypts;
 import drama.painter.core.web.utility.Randoms;
 import drama.painter.web.rbac.es.OaEs;
@@ -13,9 +16,6 @@ import drama.painter.web.rbac.tool.Config;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MultiMatchQueryBuilder;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
@@ -34,14 +34,13 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "api")
 @Service
 public class OaImpl implements IOa {
-    final OaMapper oaMapper;
-    final IUpload upload;
-    final Config.ElasticSearchClient client;
-
     static final User USER = new User();
     static final Permission QUALIFY = new Permission();
     static final List<User> STAFF = new ArrayList();
     static final List<Permission> PERMISSION = new ArrayList();
+    final OaMapper oaMapper;
+    final IUpload upload;
+    final Config.ElasticSearchClient client;
 
     @Autowired
     public OaImpl(OaMapper oaMapper, IUpload upload, Config.ElasticSearchClient client) {

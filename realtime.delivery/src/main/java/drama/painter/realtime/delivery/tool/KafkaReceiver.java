@@ -14,21 +14,21 @@ import org.springframework.stereotype.Service;
 @Slf4j(topic = "api")
 @Service
 public class KafkaReceiver extends DefaultJackson2JavaTypeMapper {
-	final Config.ElasticSearchClient es;
+    final Config.ElasticSearchClient es;
 
-	public KafkaReceiver(Config.ElasticSearchClient es) {
-		this.es = es;
-	}
+    public KafkaReceiver(Config.ElasticSearchClient es) {
+        this.es = es;
+    }
 
-	/**
-	 * containerFactory 单个接收 kafkaConsumerManualFactory 批量接收 kafkaConsumerBatchFactory 这两个名字都来自Kafka的配置类
-	 *
-	 * @param record 单个接收对象 ConsumerRecord＜String, ChatPO＞ 批量接收对象 List＜ConsumerRecord＜String, ChatPO＞＞
-	 * @param ack    应答对象
-	 */
-	@KafkaListener(topics = "chat", groupId = "聊天系统", containerFactory = "kafkaConsumerManualFactory")
-	public void kafkaReceived(ConsumerRecord<String, ChatPO> record, Acknowledgment ack) {
-		log.info("收到消息 SINGLE  ====  {}", record);
-		ack.acknowledge();
-	}
+    /**
+     * containerFactory 单个接收 kafkaConsumerManualFactory 批量接收 kafkaConsumerBatchFactory 这两个名字都来自Kafka的配置类
+     *
+     * @param record 单个接收对象 ConsumerRecord＜String, ChatPO＞ 批量接收对象 List＜ConsumerRecord＜String, ChatPO＞＞
+     * @param ack    应答对象
+     */
+    @KafkaListener(topics = "chat", groupId = "聊天系统", containerFactory = "kafkaConsumerManualFactory")
+    public void kafkaReceived(ConsumerRecord<String, ChatPO> record, Acknowledgment ack) {
+        log.info("收到消息 SINGLE  ====  {}", record);
+        ack.acknowledge();
+    }
 }

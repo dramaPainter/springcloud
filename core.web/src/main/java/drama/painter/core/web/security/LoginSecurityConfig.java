@@ -24,10 +24,6 @@ import java.util.stream.Collectors;
  * @author murphy
  */
 public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
-    static final PasswordAuth PASSWORD_AUTH = new PasswordAuth();
-    static final String LOGIN_URL = "/login/login";
-    static final String SECRET_KEY = "Web-Security-Client-Key";
-    protected Function<String, User> userProvider;
     public static final String AUTHORIZED_URL_PATH = "/login/";
     public static final String[] AUTHORIZED_SUFFIX = {"/",
             "*.ico", "*.jpg", "*.jpeg", "*.png", "*.gif",
@@ -42,7 +38,10 @@ public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
             .filter(o -> !"/".equals(o))
             .map(o -> o.replace("*", ""))
             .collect(Collectors.toList());
-
+    static final PasswordAuth PASSWORD_AUTH = new PasswordAuth();
+    static final String LOGIN_URL = "/login/login";
+    static final String SECRET_KEY = "Web-Security-Client-Key";
+    protected Function<String, User> userProvider;
     @Value("${spring.application.name}")
     String project;
 

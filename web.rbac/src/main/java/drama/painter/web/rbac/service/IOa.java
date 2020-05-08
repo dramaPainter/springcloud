@@ -2,9 +2,9 @@ package drama.painter.web.rbac.service;
 
 import drama.painter.core.web.misc.Permission;
 import drama.painter.core.web.misc.Result;
+import drama.painter.core.web.misc.User;
 import drama.painter.web.rbac.model.oa.Operation;
 import drama.painter.web.rbac.model.oa.Staff;
-import drama.painter.core.web.misc.User;
 
 import java.util.List;
 

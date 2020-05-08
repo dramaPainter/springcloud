@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class UserController {
-	@GetMapping("/user/detail")
-	public String detail() {
-		return "user/detail";
-	}
+    @GetMapping("/user/detail")
+    public String detail() {
+        return "user/detail";
+    }
 
-	@GetMapping("/user/deny")
-	@ResponseBody
-	public String deny() {
-		return "user/deny";
-	}
+    @GetMapping("/user/deny")
+    @ResponseBody
+    public String deny() {
+        return "user/deny";
+    }
 
-	@GetMapping("/user/game")
-	@ResponseBody
-	public String game() {
-		return "user/game";
-	}
+    @GetMapping("/user/game")
+    @ResponseBody
+    public String game() {
+        return "user/game";
+    }
 }

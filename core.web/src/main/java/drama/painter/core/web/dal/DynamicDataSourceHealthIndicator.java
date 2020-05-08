@@ -14,19 +14,19 @@ import javax.sql.DataSource;
  */
 @Component("dbHealthIndicator")
 class DynamicDataSourceHealthIndicator extends DataSourceHealthIndicator implements InitializingBean {
-	final DataSource mySource;
+    final DataSource mySource;
 
-	public DynamicDataSourceHealthIndicator(DataSource mySource) {
-		this.mySource = mySource;
-	}
+    public DynamicDataSourceHealthIndicator(DataSource mySource) {
+        this.mySource = mySource;
+    }
 
-	@Override
-	protected void doHealthCheck(Health.Builder builder) throws Exception {
-		setDataSource(mySource);
-		super.doHealthCheck(builder);
-	}
+    @Override
+    protected void doHealthCheck(Health.Builder builder) throws Exception {
+        setDataSource(mySource);
+        super.doHealthCheck(builder);
+    }
 
-	@Override
-	public void afterPropertiesSet() {
-	}
+    @Override
+    public void afterPropertiesSet() {
+    }
 }

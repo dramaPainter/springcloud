@@ -34,6 +34,7 @@ public enum PlatformEnum implements BaseEnum {
      */
     PLATFORM_5(5, "5平台");
 
+    static final List<PlatformEnum> MAP = Arrays.asList(PlatformEnum.values());
     final int value;
     final String name;
 
@@ -41,8 +42,6 @@ public enum PlatformEnum implements BaseEnum {
         this.value = value;
         this.name = name;
     }
-
-    static final List<PlatformEnum> MAP = Arrays.asList(PlatformEnum.values());
 
     @JsonCreator
     public static PlatformEnum apply(int code) {

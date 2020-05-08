@@ -18,6 +18,7 @@ public enum StatusEnum implements BaseEnum {
      */
     ENABLE(1, "启用");
 
+    static final List<StatusEnum> MAP = Arrays.asList(StatusEnum.values());
     final int value;
     final String name;
 
@@ -25,8 +26,6 @@ public enum StatusEnum implements BaseEnum {
         this.value = value;
         this.name = name;
     }
-
-    static final List<StatusEnum> MAP = Arrays.asList(StatusEnum.values());
 
     @JsonCreator
     public static StatusEnum apply(int code) {

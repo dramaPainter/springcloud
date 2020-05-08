@@ -18,6 +18,7 @@ class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
     public FailureHandler(String project) {
         this.project = project;
     }
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         PasswordAuth.destroy();

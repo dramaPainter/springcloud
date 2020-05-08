@@ -8,10 +8,10 @@ import lombok.Data;
  */
 @Data
 public class Permission {
-	private Integer id;
-	private String name;
-	private String url;
-	private Integer pid;
-	private MenuTypeEnum type;
-	private Byte sort;
+    private Integer id;
+    private String name;
+    private String url;
+    private Integer pid;
+    private MenuTypeEnum type;
+    private Byte sort;
 }

@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 /**
  * 使用页面鉴权模式
+ *
  * @author murphy
  */
 public class PageSecurityConfig extends LoginSecurityConfig {

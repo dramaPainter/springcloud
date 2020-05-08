@@ -6,31 +6,32 @@
     <link href="https://unpkg.com/element-ui/lib/theme-chalk/index.css" rel="stylesheet"/>
 </head>
 <body>
-<form action="/login/security" method="post" class="el-form demo-ruleForm" onsubmit="return false">
+<form action="/login/security" class="el-form demo-ruleForm" method="post" onsubmit="return false">
     <div class="el-form-item"><label class="el-form-item__label" style="width: 100px">用户名</label>
         <div class="el-form-item__content" style="margin-left: 100px">
             <div class="el-input">
-                <label><input name="username" type="text" class="el-input__inner" style="width: 200px"/></label>
+                <label><input class="el-input__inner" name="username" style="width: 200px" type="text"/></label>
             </div>
         </div>
     </div>
     <div class="el-form-item"><label class="el-form-item__label" style="width: 100px">密码</label>
         <div class="el-form-item__content" style="margin-left: 100px">
             <div class="el-input">
-                <label><input id="password" name="password" type="password" class="el-input__inner" style="width: 200px"/></label>
+                <label><input class="el-input__inner" id="password" name="password" style="width: 200px"
+                              type="password"/></label>
             </div>
         </div>
     </div>
     <div class="el-form-item"><label class="el-form-item__label" style="width: 100px">记住我</label>
         <div class="el-form-item__content" style="margin-left: 100px">
             <div class="el-checkbox">
-                <label><input name="remember" type="checkbox" class="el-checkbox__inner"/>1天</label>
+                <label><input class="el-checkbox__inner" name="remember" type="checkbox"/>1天</label>
             </div>
         </div>
     </div>
     <div class="el-form-item"><label class="el-form-item__label" style="width: 100px"></label>
         <div class="el-form-item__content" style="margin-left: 100px">
-            <button type="button" class="el-button el-button--danger" onclick="onSubmit()">登录</button>
+            <button class="el-button el-button--danger" onclick="onSubmit()" type="button">登录</button>
         </div>
     </div>
     <div class="el-form-item"><label class="el-form-item__label" style="width: 100px"></label>
@@ -38,7 +39,7 @@
         </div>
     </div>
 </form>
-<script src="/js/md5.js"></script>
+<script src="/static/js/util/md5.js"></script>
 <script>
     function onSubmit() {
         var pwd = document.getElementById("password");

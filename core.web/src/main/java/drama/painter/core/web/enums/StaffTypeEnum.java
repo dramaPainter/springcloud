@@ -46,6 +46,7 @@ public enum StaffTypeEnum implements BaseEnum {
      */
     PLATFORM_ADMIN(128, "管理员帐号");
 
+    static final List<StaffTypeEnum> MAP = Arrays.asList(StaffTypeEnum.values());
     final int value;
     final String name;
 
@@ -53,8 +54,6 @@ public enum StaffTypeEnum implements BaseEnum {
         this.value = value;
         this.name = name;
     }
-
-    static final List<StaffTypeEnum> MAP = Arrays.asList(StaffTypeEnum.values());
 
     @JsonCreator
     public static StaffTypeEnum apply(int code) {

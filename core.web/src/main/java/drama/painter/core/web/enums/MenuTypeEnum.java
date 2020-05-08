@@ -22,6 +22,7 @@ public enum MenuTypeEnum implements BaseEnum {
      */
     MENU(2, "菜单");
 
+    static final List<MenuTypeEnum> MAP = Arrays.asList(MenuTypeEnum.values());
     final int value;
     final String name;
 
@@ -29,8 +30,6 @@ public enum MenuTypeEnum implements BaseEnum {
         this.value = value;
         this.name = name;
     }
-
-    static final List<MenuTypeEnum> MAP = Arrays.asList(MenuTypeEnum.values());
 
     @JsonCreator
     public static MenuTypeEnum apply(int code) {

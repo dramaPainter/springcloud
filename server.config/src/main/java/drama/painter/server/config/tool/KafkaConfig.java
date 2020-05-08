@@ -22,28 +22,28 @@ import java.util.Properties;
  */
 @Configuration
 public class KafkaConfig {
-	@Value("${spring.cloud.config.server.native.search-locations}")
-	String url;
+    @Value("${spring.cloud.config.server.native.search-locations}")
+    String url;
 
-	@Primary
-	@Bean
-	public KafkaProperties getKafkaProperties(KafkaProperties kafka) {
-		try {
-			Yaml yaml = new Yaml();
-			String resource = (url.contains("classpath:") ? ConfigApplication.LOCAL_PATH + "/profile" : url) + "/api-production.yml";
-			try (InputStream input = new FileInputStream(resource)) {
-				Properties prop = yaml.loadAs(input, Properties.class);
-				String servers = ((Map) prop.get("kafka")).get("server").toString();
-				kafka.setBootstrapServers(Arrays.asList(servers.split(",")));
-				return kafka;
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Primary
+    @Bean
+    public KafkaProperties getKafkaProperties(KafkaProperties kafka) {
+        try {
+            Yaml yaml = new Yaml();
+            String resource = (url.contains("classpath:") ? ConfigApplication.LOCAL_PATH + "/profile" : url) + "/api-production.yml";
+            try (InputStream input = new FileInputStream(resource)) {
+                Properties prop = yaml.loadAs(input, Properties.class);
+                String servers = ((Map) prop.get("kafka")).get("server").toString();
+                kafka.setBootstrapServers(Arrays.asList(servers.split(",")));
+                return kafka;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Bean
-	public ConsumerFactory getConsumerFactory(KafkaProperties prop) {
-		return new DefaultKafkaConsumerFactory(prop.buildConsumerProperties());
-	}
+    @Bean
+    public ConsumerFactory getConsumerFactory(KafkaProperties prop) {
+        return new DefaultKafkaConsumerFactory(prop.buildConsumerProperties());
+    }
 }

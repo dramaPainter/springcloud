@@ -1,8 +1,8 @@
 package drama.painter.core.web.config;
 
 import drama.painter.core.web.utility.Certification;
-import drama.painter.core.web.utility.Json;
 import drama.painter.core.web.utility.Encrypts;
+import drama.painter.core.web.utility.Json;
 import lombok.Data;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -128,7 +128,7 @@ public class ElasticSearch {
     public void update(UpdateRequest request) {
         try {
             UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
-            if (response.getResult()  != DocWriteResponse.Result.UPDATED) {
+            if (response.getResult() != DocWriteResponse.Result.UPDATED) {
                 throw new IOException(response.getResult().name());
             }
         } catch (IOException e) {
@@ -206,8 +206,8 @@ public class ElasticSearch {
 
 @Component
 class ElasticConfig {
-    final ElasticEntity entity;
     static final int TIMEOUT = 5;
+    final ElasticEntity entity;
 
     public ElasticConfig(ElasticEntity entity) {
         this.entity = entity;

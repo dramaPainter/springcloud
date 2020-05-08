@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 class AccessDeniedHandlerImpl implements AccessDeniedHandler {
-   /**
-    * 如果想要跳转页面，可以使用以下语句：
-    * request.setAttribute("msg", e.getMessage());
-    * request.getRequestDispatcher("/login/error").forward(request, response);
-    */
-   @Override
-   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException {
-       response.setCharacterEncoding("utf-8");
-       response.getWriter().write(Json.toJsonString(Result.toMessage(-1, e.getMessage())));
-   }
+    /**
+     * 如果想要跳转页面，可以使用以下语句：
+     * request.setAttribute("msg", e.getMessage());
+     * request.getRequestDispatcher("/login/error").forward(request, response);
+     */
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException {
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().write(Json.toJsonString(Result.toMessage(-1, e.getMessage())));
+    }
 }

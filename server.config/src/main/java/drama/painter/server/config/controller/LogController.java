@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class LogController {
-	@GetMapping("/log/setGlobal")
-	public String changeLevel(String level) {
-		LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-		loggerContext.getLogger("root").setLevel(Level.toLevel(level));
-		return "操作成功：" + level;
-	}
+    @GetMapping("/log/setGlobal")
+    public String changeLevel(String level) {
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        loggerContext.getLogger("root").setLevel(Level.toLevel(level));
+        return "操作成功：" + level;
+    }
 }

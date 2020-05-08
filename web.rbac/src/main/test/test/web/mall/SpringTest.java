@@ -10,11 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Slf4j
 @SpringBootTest(classes = RbacApplication.class)
 public class SpringTest {
-	@Autowired
-	IOa oa;
+    @Autowired
+    IOa oa;
 
-	@Test
-	public void test() {
-		oa.listOperations(1, "2020-01-01 00:00:00,000","2020-09-01 00:00:00,000", 0,"web-rbac /login/login");
-	}
+    @Test
+    public void test() {
+        oa.listOperations(1, "2020-01-01 00:00:00,000", "2020-09-01 00:00:00,000", 0, "web-rbac /login/login");
+    }
 }

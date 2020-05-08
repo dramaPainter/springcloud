@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,18 +18,18 @@ import java.util.Map;
 @Slf4j(topic = "api")
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	/**
-	 * 设置要捕获的异常，并作出处理
-	 * 注意：这里可以返回试图，也可以放回JSON，这里就当做一个Controller使用
-	 *
-	 * @param request {@link HttpServletRequest}
-	 * @param e       {@link Exception}
-	 * @return {@link Map}
-	 */
-	@ExceptionHandler(value = Exception.class)
-	@ResponseBody
-	public Result handler(Exception e) {
-		log.error("未处理的错误", e);
-		return Result.toMessage(-1, e.getMessage());
-	}
+    /**
+     * 设置要捕获的异常，并作出处理
+     * 注意：这里可以返回试图，也可以放回JSON，这里就当做一个Controller使用
+     *
+     * @param request {@link HttpServletRequest}
+     * @param e       {@link Exception}
+     * @return {@link Map}
+     */
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public Result handler(Exception e) {
+        log.error("未处理的错误", e);
+        return Result.toMessage(-1, e.getMessage());
+    }
 }

@@ -16,6 +16,14 @@ public class Result<T> {
 
     public static Result SUCCESS = Result.toMessage(CODE_SUCCESS, OPERATION_SUCCEED);
     public static Result FAIL = Result.toMessage(CODE_FAIL, OPERATION_FAILED);
+    int code;
+    String message;
+    T data;
+
+    public Result() {
+        this.code = CODE_FAIL;
+        this.message = "状态进入初始化。";
+    }
 
     public static <T> Result<T> toData(int code, T data) {
         return new Result(code, null, data);
@@ -31,14 +39,5 @@ public class Result<T> {
 
     public static <T> Result<T> toFail(String message) {
         return new Result(CODE_FAIL, message, null);
-    }
-
-    int code;
-    String message;
-    T data;
-
-    public Result() {
-        this.code = CODE_FAIL;
-        this.message = "状态进入初始化。";
     }
 }

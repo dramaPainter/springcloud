@@ -9,22 +9,22 @@ import java.util.List;
  * @author murphy
  */
 public class DynamicDataSourceContextHolder {
-	static final ThreadLocal<String> LOCAL = new ThreadLocal<>();
-	protected static final List<String> DATASOURCES = new ArrayList<>();
+    protected static final List<String> DATASOURCES = new ArrayList<>();
+    static final ThreadLocal<String> LOCAL = new ThreadLocal<>();
 
-	protected static String getDataSourceType() {
-		return LOCAL.get();
-	}
+    protected static String getDataSourceType() {
+        return LOCAL.get();
+    }
 
-	public static void setDataSourceType(String dataSourceType) {
-		LOCAL.set(dataSourceType);
-	}
+    public static void setDataSourceType(String dataSourceType) {
+        LOCAL.set(dataSourceType);
+    }
 
-	public static void clearDataSourceType() {
-		LOCAL.remove();
-	}
+    public static void clearDataSourceType() {
+        LOCAL.remove();
+    }
 
-	public static boolean contains(String dataSourceId) {
-		return DATASOURCES.contains(dataSourceId);
-	}
+    public static boolean contains(String dataSourceId) {
+        return DATASOURCES.contains(dataSourceId);
+    }
 }

@@ -12,8 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static drama.painter.core.web.security.LoginSecurityConfig.AUTHORIZED_URL_PATH;
 import static drama.painter.core.web.security.LoginSecurityConfig.AUTHORIZED_SUFFIX_ITEM;
+import static drama.painter.core.web.security.LoginSecurityConfig.AUTHORIZED_URL_PATH;
 
 class AccessAllowedHandlerImpl implements AccessDecisionManager {
     final List<Permission> pages;

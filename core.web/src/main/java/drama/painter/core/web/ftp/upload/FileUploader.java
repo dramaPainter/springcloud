@@ -9,7 +9,6 @@ import sun.misc.BASE64Decoder;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.concurrent.Callable;
 
 class FileUploader implements Callable<Result> {

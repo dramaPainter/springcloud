@@ -7,12 +7,9 @@ import drama.painter.core.web.misc.User;
 import drama.painter.core.web.security.PageSecurityConfig;
 import drama.painter.web.rbac.service.IOa;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +26,7 @@ public class Config {
     @Component
     public static class ElasticSearchAppender extends ElasticSearchLogAppender {
         @Autowired
-        public void init(ElasticSearch client){
+        public void init(ElasticSearch client) {
             ElasticSearchLogAppender.client = client;
         }
     }

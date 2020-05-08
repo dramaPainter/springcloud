@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import;
 @MapperScan("drama.painter.web.rbac.mapper")
 @ComponentScan("drama.painter")
 public class RbacApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(RbacApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RbacApplication.class, args);
+    }
 }

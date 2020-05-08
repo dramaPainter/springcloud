@@ -93,7 +93,6 @@ function loadScript(url, callback) {
     }
 }
 
-
 function loadData(method, url, param, succeedCallback, failedCallback) {
     failedCallback = failedCallback || function () {
     };
@@ -115,35 +114,3 @@ function loadData(method, url, param, succeedCallback, failedCallback) {
         }
     }).catch(r => failedCallback({code: -1, message: r}));
 }
-
-/*
-loadScript("/vue/element/element-ui.css", "css");
-loadScript("/css/core.css", "css");
-loadScript("/vue/element/vue.js");
-loadScript("/vue/element/axios.js");
-loadScript("/vue/element/element-ui.js");
-*/
-
-function appLoad(fun) {
-    let index = 0;
-    let urls = [
-        "/css/core.css",
-        "https://unpkg.com/element-ui/lib/theme-chalk/index.css",
-        "https://unpkg.com/vue",
-        "https://unpkg.com/element-ui",
-        "https://unpkg.com/axios/dist/axios.min.js"
-    ];
-    onAppLoading(urls, 0, fun);
-}
-
-function onAppLoading(urls, index, fun) {
-    loadScript(urls[index], function () {
-        if (index == urls.length - 1) {
-            fun();
-        } else {
-            onAppLoading(urls, ++index, fun);
-        }
-    });
-}
-
-

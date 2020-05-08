@@ -16,16 +16,16 @@ import java.util.function.Function;
  * @author murphy
  */
 class PasswordAuth extends AbstractUserDetailsAuthenticationProvider implements UserDetailsService {
-    Function<String, User> userProvider;
     final static ThreadLocal<User> USER = new ThreadLocal();
+    Function<String, User> userProvider;
+
+    protected static void destroy() {
+        USER.remove();
+    }
 
     public void config(Function<String, User> userProvider) {
         this.hideUserNotFoundExceptions = false;
         this.userProvider = userProvider;
-    }
-
-    protected static void destroy() {
-        USER.remove();
     }
 
     @Override

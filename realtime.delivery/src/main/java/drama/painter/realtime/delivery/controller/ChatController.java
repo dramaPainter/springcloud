@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class ChatController {
-	final KafkaTemplate<String, ChatPO> kafka;
+    final KafkaTemplate<String, ChatPO> kafka;
 
-	public ChatController(KafkaTemplate<String, ChatPO> kafka) {
-		this.kafka = kafka;
-	}
+    public ChatController(KafkaTemplate<String, ChatPO> kafka) {
+        this.kafka = kafka;
+    }
 
-	@RequestMapping("/chat")
-	public String chat(String text) {
-		ChatPO chat = new ChatPO();
-		chat.setBody(text);
-		kafka.send("chat", chat).addCallback( t-> t.getProducerRecord().value(), e -> log.error("发送聊天信息出错", e));
-		return text;
-	}
+    @RequestMapping("/chat")
+    public String chat(String text) {
+        ChatPO chat = new ChatPO();
+        chat.setBody(text);
+        kafka.send("chat", chat).addCallback(t -> t.getProducerRecord().value(), e -> log.error("发送聊天信息出错", e));
+        return text;
+    }
 }

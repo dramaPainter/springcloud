@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false">
-	<appender name="api" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${log.path}/config/api.log</file>
-		<append>true</append>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log.path}/config/api.%d{yyyyMMdd}.zip</fileNamePattern>
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
-		<encoder>
-			<pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
-		</encoder>
-	</appender>
+    <appender name="api" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/config/api.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/config/api.%d{yyyyMMdd}.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date %-5level [%logger{50}] - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-	<root level="INFO">
-		<appender-ref ref="api"/>
-	</root>
+    <root level="INFO">
+        <appender-ref ref="api"/>
+    </root>
 </configuration>

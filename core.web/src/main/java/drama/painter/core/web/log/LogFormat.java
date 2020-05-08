@@ -24,6 +24,7 @@ public enum LogFormat implements BaseEnum {
      */
     SQL(3, "SQL日志");
 
+    static final List<drama.painter.core.web.enums.StatusEnum> MAP = Arrays.asList(drama.painter.core.web.enums.StatusEnum.values());
     final int value;
     final String name;
 
@@ -31,8 +32,6 @@ public enum LogFormat implements BaseEnum {
         this.value = value;
         this.name = name;
     }
-
-    static final List<drama.painter.core.web.enums.StatusEnum> MAP = Arrays.asList(drama.painter.core.web.enums.StatusEnum.values());
 
     @JsonCreator
     public static drama.painter.core.web.enums.StatusEnum apply(int code) {

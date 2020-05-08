@@ -1,30 +1,25 @@
 package drama.painter.core.web.config;
 
-import drama.painter.core.web.utility.Dates;
 import drama.painter.core.web.utility.Json;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author murphy
@@ -33,9 +28,8 @@ import java.util.Objects;
 @Aspect
 @Component
 public class AccessLog {
-    static ThreadLocal<LocalDateTime> TIME = new ThreadLocal();
     static final List<String> HEADER = Arrays.asList("X-FORWARDED-FOR", "X-Real-IpTable");
-
+    static ThreadLocal<LocalDateTime> TIME = new ThreadLocal();
     @Value("${spring.application.name}")
     String project;
 
@@ -43,25 +37,6 @@ public class AccessLog {
         String name = HEADER.stream().filter(o -> request.getHeader(o) != null).findFirst().orElse(null);
         String value = name == null ? request.getRemoteAddr() : request.getHeader(name);
         return value == null ? "127.0.0.1" : (value.contains(",") ? value.split(",")[0] : value);
-    }
-
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping) || @annotation(org.springframework.web.bind.annotation.PostMapping)")
-    void cut() {
-    }
-
-    @Before("cut()")
-    public void before(JoinPoint point) {
-        TIME.set(LocalDateTime.now());
-    }
-
-    @AfterReturning(value = "cut()", returning = "result")
-    public void afterReturning(JoinPoint point, Object result) {
-        long timespan = Duration.between(TIME.get(), LocalDateTime.now()).toMillis();
-        TIME.remove();
-
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String post = "POST".equals(request.getMethod()) ? StringUtils.arrayToCommaDelimitedString(point.getArgs()) : "";
-        add(project, timespan, request, post, result);
     }
 
     /**
@@ -97,5 +72,24 @@ public class AccessLog {
         username = "anonymousUser".equals(username) ? "NULL" : username;
 
         log.info("{} {} {} {} {} - {} - {} - {}", project, timespan, username, sessionId, ip, url, parameter, returnValue);
+    }
+
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping) || @annotation(org.springframework.web.bind.annotation.PostMapping)")
+    void cut() {
+    }
+
+    @Before("cut()")
+    public void before(JoinPoint point) {
+        TIME.set(LocalDateTime.now());
+    }
+
+    @AfterReturning(value = "cut()", returning = "result")
+    public void afterReturning(JoinPoint point, Object result) {
+        long timespan = Duration.between(TIME.get(), LocalDateTime.now()).toMillis();
+        TIME.remove();
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String post = "POST".equals(request.getMethod()) ? StringUtils.arrayToCommaDelimitedString(point.getArgs()) : "";
+        add(project, timespan, request, post, result);
     }
 }

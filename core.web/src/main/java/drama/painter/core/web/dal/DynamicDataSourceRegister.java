@@ -31,8 +31,8 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
     static final String POOL_NAME = "pool-name";
     static final String DRIVER = "driver";
     static final String READ_ONLY = "read-only";
-    DataSource defaultDataSource;
     final Map<String, DataSource> dataSourceMap = new HashMap<>();
+    DataSource defaultDataSource;
 
     @Override
     public void setEnvironment(@NonNull Environment environment) {

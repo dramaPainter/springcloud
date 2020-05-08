@@ -4,6 +4,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import drama.painter.core.web.config.ElasticSearch;
 import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 @Data
 public class ElasticSearchLogAppender extends AppenderBase<ILoggingEvent> {
     static final Map<LogFormat, IAppender> MAP = new HashMap();
+    protected static ElasticSearch client;
 
     static {
         MAP.put(LogFormat.API, new ApiLogAppender());
@@ -20,7 +22,6 @@ public class ElasticSearchLogAppender extends AppenderBase<ILoggingEvent> {
         MAP.put(LogFormat.SQL, new SqlLogAppender());
     }
 
-    protected static ElasticSearch client;
     LogFormat format;
 
     @Override

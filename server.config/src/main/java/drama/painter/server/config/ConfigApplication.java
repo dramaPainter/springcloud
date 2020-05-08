@@ -10,15 +10,15 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @EnableConfigServer
 @SpringBootApplication
 public class ConfigApplication {
-	public static final String LOCAL_PATH;
+    public static final String LOCAL_PATH;
 
-	static {
-		String path = ConfigApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		path = path.endsWith(".jar") ? path.substring(0, path.lastIndexOf("/")) : path;
-		LOCAL_PATH = path.endsWith("/") || path.endsWith("\\") ? path.substring(0, path.length() - 1) : path;
-	}
+    static {
+        String path = ConfigApplication.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        path = path.endsWith(".jar") ? path.substring(0, path.lastIndexOf("/")) : path;
+        LOCAL_PATH = path.endsWith("/") || path.endsWith("\\") ? path.substring(0, path.length() - 1) : path;
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConfigApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigApplication.class, args);
+    }
 }

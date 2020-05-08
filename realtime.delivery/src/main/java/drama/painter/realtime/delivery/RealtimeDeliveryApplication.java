@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 @Import(DynamicDataSourceRegister.class)
 @ComponentScan({"drama.painter", "org.springframework.kafka.core"})
 public class RealtimeDeliveryApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(RealtimeDeliveryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RealtimeDeliveryApplication.class, args);
+    }
 }
